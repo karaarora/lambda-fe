@@ -36,7 +36,7 @@ const HomePage = (): JSX.Element => {
         </SideBarContainer>
         <MainContainer>
             <div className="py-3 sticky top-0 bg-grey flex z-10">
-                <Input placeholder="Search" type="text" />
+                <Input className="mr-4" placeholder="Search" type="text" />
                 <Avatar />
             </div>
             <div className="container flex-grow mt-4 p-2" onClick={() => setDetail((d) => !d)}>
