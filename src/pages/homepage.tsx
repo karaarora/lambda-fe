@@ -34,7 +34,7 @@ const HomePage = (): JSX.Element => {
             </Link>
         </SideBarContainer>
         <MainContainer>
-            <div className="py-3 sticky top-0 bg-gray flex z-10">
+            <div className="py-3 sticky top-0 bg-grey flex z-10">
                 <Search />
                 <Avatar />
             </div>

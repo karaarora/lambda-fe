@@ -1,0 +1,50 @@
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { fabric } from 'fabric';
+import { IEvent } from 'fabric/fabric-impl';
+
+import { setActiveObject, setCanvas } from '../../store/actions/editor';
+import { IState } from '../../store/types/toolbar';
+import { createCanvas, createTextBox, handleActiveObjectRemove, 
+    handleMouseDown, listenEvent } from '../../utils/fabric';
+
+const Editor:React.FC = ():JSX.Element => {
+    const { fontSize, activeFont } = useSelector((state: { toolbar: IState }) => state.toolbar);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const canvas:fabric.Canvas = createCanvas('meme_canvas',{ containerClass: "mx-auto" }); 
+        dispatch(setCanvas(canvas));
+        
+        const handleDBClick = (e:any) => createTextBox(e,canvas,
+            { fontSize: parseInt(fontSize,10), fontFamily: activeFont?.family || "" });
+
+        const handleSelection = (e:IEvent<Event>) => handleMouseDown(e,(value:fabric.Object|null) => 
+            dispatch(setActiveObject(value)) );
+            
+        const handleKeyDown = (e:KeyboardEvent) => handleActiveObjectRemove(e as any, canvas);
+
+        document.addEventListener('keydown', handleKeyDown);
+        listenEvent(canvas,"mouse:dblclick",handleDBClick);
+        listenEvent(canvas,"mouse:down",handleSelection);
+        (window as any).canvas = canvas; 
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            canvas.off("mouse:dblclick",handleDBClick);
+            canvas.off("mouse:down",handleSelection);
+            canvas.removeListeners();
+            canvas.clear();
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // const handleBlur = useCallback(() => canvas.discardActiveObject(), [canvas]);
+
+    return <div className="w-full h-full-minus-above bg-white rounded-3xl mt-5 flex items-center overflow-hidden">
+        <canvas id="meme_canvas" />
+    </div>;
+};
+
+export default Editor;

@@ -8,15 +8,19 @@ module.exports = {
         '98': "32rem"
       },
       height: {
-        '55vh': "55vh"
+        '55vh': "55vh",
+        'full-minus-above': "calc(100% - 8.4rem)"
       },
       minWidth: {
         '7': "7rem"
       },
+      maxWidth: {
+        'xxs': "10rem"
+      },
       colors: {
         primary: "#3498db",
         white: "#fff",
-        gray: "#ecf0f1",
+        grey: "#ecf0f1",
         transparent: "transparent"
       },
       borderRadius: {

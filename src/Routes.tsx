@@ -1,19 +1,25 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { 
+    Redirect, 
     Route,
     BrowserRouter as Router, 
     Switch
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import HomePage from "./pages/homepage";
-import Studio from "./pages/studio";
+import PageSkeleton from "./ui/Skeleton/PageSkeleton";
+
+const HomePage = lazy(() => import("./pages/homepage"));
+const Studio = lazy(() => import("./pages/studio"));
 
 const Routes = (): JSX.Element => (
     <Router>
-        <Switch>
-            <Route component={HomePage} exact path="/" />
-            <Route component={Studio} exact path="/studio" />
-        </Switch>
+        <Suspense fallback={PageSkeleton}>
+            <Switch>
+                <Route component={HomePage} exact path="/" />
+                <Route component={Studio} exact path="/studio" />
+                <Route render={() => <Redirect to={{pathname: "/"}} />} />
+            </Switch>
+        </Suspense>
     </Router>
 );
 
