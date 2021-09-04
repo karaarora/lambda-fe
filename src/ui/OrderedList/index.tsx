@@ -8,7 +8,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ list, title }): JSX.Element =
         <ol className="text-primary-normal mt-2">
             {list.map(({ name, onClick }: OrderedListItem) => (
                 <li key={name}>
-                    <Link className="text-sm font-medium leading-7" onClick={onClick} to="/">{name}</Link>
+                    <Link className="text-sm font-medium leading-7 hover:opacity-75" onClick={onClick} to="/">{name}</Link>
                 </li>
             ))}
         </ol>

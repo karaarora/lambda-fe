@@ -9,20 +9,21 @@ import Meme4 from '../../assets/meme4.jpeg';
 
 const arr = [Meme1,Meme2,Meme3,Meme4];
 
-const Card = ():JSX.Element => (
-    <div className="inline-block bg-white rounded-lg shadow-md w-full h-auto mr-4 mb-4">
-        <div className="bg-primay-normal">
+const Card:React.FC<{ isTemplate?: boolean; }> = ({ isTemplate = false }):JSX.Element => (
+    <div className={`inline-block bg-white rounded-lg shadow-md ${!isTemplate? 'h-auto w-full':'w-56 h-56'}
+         mr-4 mb-4 cursor-pointer`}>
+        <div className={`bg-primay-normal rounded-t-lg ${isTemplate ? 'h-48 bg-grey':''}`}>
             <img alt="meme1" className="rounded-t-lg object-contain w-full h-full" 
                 src={arr[Math.floor(Math.random() * arr.length)]} />
         </div>
         <div className="p-2">
-            <div className="text-xs text-primary-normal">Creator Name</div>
+            {!isTemplate && <div className="text-xs text-primary-normal">Creator Name</div>}
             <div className="text-sm text-primary-bold font-medium">Meme Title</div>
         </div>
-        <div className="flex mx-2 mb-3 w-12 justify-between">
+        {!isTemplate && <div className="flex mx-2 mb-3 w-12 justify-between">
             <ThumbDown />
             <Thumbup />
-        </div>
+        </div>}
     </div>
 );
 

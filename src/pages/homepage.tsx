@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom';
 import Avatar from '../ui/Avatar';
 import Card from '../ui/Card';
 import Detail from '../ui/Detail';
+import Input from '../ui/Input';
+import ListingContainer  from '../ui/ListingContainer';
 import MainContainer from '../ui/MainContainer';
 import OrderedList from '../ui/OrderedList';
-import Search from '../ui/Search';
 import SideBarContainer from '../ui/SideBarConainer';
 import Title from '../ui/Title';
 
@@ -35,19 +36,16 @@ const HomePage = (): JSX.Element => {
         </SideBarContainer>
         <MainContainer>
             <div className="py-3 sticky top-0 bg-grey flex z-10">
-                <Search />
+                <Input placeholder="Search" type="text" />
                 <Avatar />
             </div>
             <div className="container flex-grow mt-4 p-2" onClick={() => setDetail((d) => !d)}>
                 <Title>Trending Memes</Title>
-                <div className={`py-5 ${showDetail ? `sm:masonry-1-col md:masonry-2-col lg:masonry-3-col`
-                    : `masonry-1-col sm:masonry-2-col md:masonry-3-col lg:masonry-4-col
-                    xl:masonry-5-col 2xl:masonry-6-col`} 
-                    box-border mx-auto before:box-inherit after:box-inherit`}>
+                <ListingContainer isCollapsed={showDetail} isMasonry>
                     {[...new Array(60)].map(() => (
                         <Card />
                     ))}
-                </div>
+                </ListingContainer>
             </div>
         </MainContainer>
         {showDetail && <SideBarContainer showOnRight>
