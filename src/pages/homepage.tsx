@@ -3,29 +3,25 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { DynamicModuleLoader } from 'redux-dynamic-modules';
+
+import Listing from '../components/Listing';
+import ListingSearch from '../components/ListingSearch';
+import MemeDetail from '../components/MemeDetail';
+import Options from '../components/Options';
+import RestrictWrapper from '../components/RestrictWrapper';
+import Title from '../components/Title';
+import User from '../components/User';
+import getMemeModule from '../store/modules/meme';
 import Avatar from '../ui/Avatar';
-import Card from '../ui/Card';
-import Detail from '../ui/Detail';
-import Input from '../ui/Input';
-import ListingContainer  from '../ui/ListingContainer';
 import MainContainer from '../ui/MainContainer';
-import OrderedList from '../ui/OrderedList';
 import SideBarContainer from '../ui/SideBarConainer';
-import Title from '../ui/Title';
 
-const dummyList:any = [
-    { name: "Trending", onClick: () => {} },
-    { name: "Most Recent", onClick: () => {} },
-    { name: "Most Liked", onClick: () => {} },
-    { name: "Most Viewed", onClick: () => {} },
-];
-
-const HomePage = (): JSX.Element => {
-    const [showDetail, setDetail] = useState(false);
-
-    return <div className="flex">
+const HomePage = (): JSX.Element => <div className="flex">
         <SideBarContainer>
-            <OrderedList list={dummyList} title="Sort by" />
+            <DynamicModuleLoader modules={[getMemeModule()]}>
+                <Options type="sort" />
+            </DynamicModuleLoader>
             <span className="text-black text-xs font-base">Create your own memes</span>
             <Link 
                 className="bg-primary rounded-3xl py-2 px-5 text-white w-fit mt-4"
@@ -36,22 +32,23 @@ const HomePage = (): JSX.Element => {
         </SideBarContainer>
         <MainContainer>
             <div className="py-3 sticky top-0 bg-grey flex z-10">
-                <Input className="mr-4" placeholder="Search" type="text" />
-                <Avatar />
+                <DynamicModuleLoader modules={[getMemeModule()]}>
+                    <ListingSearch />
+                </DynamicModuleLoader>
+                <User />
             </div>
-            <div className="container flex-grow mt-4 p-2" onClick={() => setDetail((d) => !d)}>
+            <div className="container flex-grow mt-4 p-2">
                 <Title>Trending Memes</Title>
-                <ListingContainer isCollapsed={showDetail} isMasonry>
-                    {[...new Array(60)].map(() => (
-                        <Card />
-                    ))}
-                </ListingContainer>
+                <DynamicModuleLoader modules={[getMemeModule()]}>
+                    <Listing isMasonry isTemplate={false} />
+                </DynamicModuleLoader>
             </div>
         </MainContainer>
-        {showDetail && <SideBarContainer showOnRight>
-                <Detail />
-            </SideBarContainer>}
+        <RestrictWrapper levels={["memes","selectedMeme"]} showFor="notnull">
+            <SideBarContainer showOnRight>
+                <MemeDetail />
+            </SideBarContainer>
+        </RestrictWrapper>
     </div>;
-};
 
 export default HomePage;

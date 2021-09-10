@@ -1,11 +1,12 @@
 module.exports = {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html','./src/*'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       width: {
         fit: "fit-content",
-        '98': "32rem"
+        '98': "32rem",
+        '35perc': "35%"
       },
       height: {
         '55vh': "55vh",

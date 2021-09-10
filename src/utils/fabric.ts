@@ -4,7 +4,7 @@ import { KeyboardEvent, MouseEvent } from "react-router/node_modules/@types/reac
 import { fabric } from "fabric";
 import { IEvent } from "fabric/fabric-impl";
 
-const defaultOptions = {
+export const defaultOptions = {
     cornerColor: "#fff",
     borderColor: "#000",
     cornerStyle: "circle" as const,
@@ -17,6 +17,7 @@ const defaultTextBoxOptions = {
     isWrapping: true
 };
 
+export const ESTATE_KEY = "ms_e_state";
 export const createCanvas = (canvasId:string,options?:fabric.ICanvasOptions):fabric.Canvas => 
     new fabric.Canvas(canvasId, options);
 
@@ -78,4 +79,13 @@ export const handleActiveObjectRemove = (e:KeyboardEvent, canvas:fabric.Canvas):
     if (e.key === 'Backspace' && e.metaKey) {
         canvas.remove(canvas.getActiveObject());
     }
+};
+
+export const getCanvasDetails = (canvas:fabric.Canvas):{ state: string; base64: string; } => {
+    const state = JSON.stringify(canvas.toJSON());
+    const base64 = canvas.toDataURL({ 
+        format: 'png',
+        quality: 0.8
+    }).split(',').pop() as string;
+    return { state, base64 };
 };

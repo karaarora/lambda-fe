@@ -1,10 +1,17 @@
+import toast from 'react-hot-toast';
+
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
+import { BASE_URL } from './env';
+import { getCookie } from './functions';
+
+const token:string = getCookie("me_token");
 /**
  * Create an Axios Client with defaults
  */
 const client = axios.create({
-  baseURL: "base"
+  baseURL: BASE_URL,
+  headers: token ? { token } : null
 });
 
 /**
@@ -12,25 +19,17 @@ const client = axios.create({
  */
 const request = (options:AxiosRequestConfig):any => {
 
-  const onSuccess = (response:AxiosResponse) => {
-    console.debug('Request Successful!', response);
-    return response.data;
-  };
+  const onSuccess = (response:AxiosResponse) => response.data;
 
   const onError = (error:AxiosError) => {
-    console.error('Request Failed:', error.config);
-
     if (error.response) {
       // Request was made but server responded with something
-      // other than 2xx
-      console.error('Status:',  error.response.status);
-      console.error('Data:',    error.response.data);
-      console.error('Headers:', error.response.headers);
-
+      // other than 2xx 
+      toast.error("Some Issue Occured! Please try in some time !");
     } else {
       // Something else happened while setting up the request
       // triggered the error
-      console.error('Error Message:', error.message);
+      toast.error(error.message || "Some thing happened!");
     }
 
     return Promise.reject(error.response || error.message);

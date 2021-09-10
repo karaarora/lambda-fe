@@ -1,12 +1,19 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { IState } from '../../store/types/editor';
+const RestrictWrapper:React.FC<{ showFor: string; levels: string[] }> = ({ children, showFor, levels }):JSX.Element|null => {
+    const state:any = useSelector((s) => s);
+    let value:any = state;
 
-const RestrictWrapper:React.FC<{ showFor: string; }> = ({ children, showFor }):JSX.Element|null => {
-    const { activeObject } = useSelector((state: { editor: IState }) => state.editor);
+    levels.forEach((level:string) => {
+        if(value) {
+            value = value[level];
+        } else {
+            value = state;
+        }
+    });
     
-    if(activeObject?.type === showFor)
+    if(showFor === "notnull" ? !!value : value === showFor)
     return children as JSX.Element;
 
     return null;

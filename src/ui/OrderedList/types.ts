@@ -1,4 +1,4 @@
-import React from "react-router/node_modules/@types/react";
+import { MouseEventHandler } from "react";
 
 export type OrderedListProps = {
     list: Array<OrderedListItem>;
@@ -7,7 +7,7 @@ export type OrderedListProps = {
 
 export type OrderedListItem = {
     name: string;
-    onClick: (e: Event) => void;
+    to: any;
+    active: boolean;
+    onClick: MouseEventHandler<HTMLAnchorElement>  
 }
-
-type Event = React.MouseEvent<HTMLElement>;

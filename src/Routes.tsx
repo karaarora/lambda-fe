@@ -17,6 +17,7 @@ const Routes = (): JSX.Element => (
             <Switch>
                 <Route component={HomePage} exact path="/" />
                 <Route component={Studio} exact path="/studio" />
+                <Route component={Studio} exact path="/studio/:memeId" />
                 <Route render={() => <Redirect to={{pathname: "/"}} />} />
             </Switch>
         </Suspense>

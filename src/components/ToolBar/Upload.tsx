@@ -11,7 +11,6 @@ const Upload:React.FC = ():JSX.Element => {
 
     const handleUpload = useCallback((e:any) => {
         const url:string = URL.createObjectURL(e.target.files[0]);
-        console.log(canvas,url);
         addImage(canvas, url);
         e.target.value = null;
     }, [canvas]);

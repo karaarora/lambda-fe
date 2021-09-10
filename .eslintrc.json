@@ -66,7 +66,8 @@
     "sort-imports": ["error", {
       "ignoreCase": true,
       "ignoreDeclarationSort": true
-    }]
+    }],
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
   },
   "settings": {
     "react": {
