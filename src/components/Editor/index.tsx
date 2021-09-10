@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -9,12 +9,11 @@ import { setActiveObject, setCanvas } from '../../store/actions/editor';
 import { getMemeData } from '../../store/thunk/meme';
 import { IState as IMemeState } from '../../store/types/meme';
 import { IState } from '../../store/types/toolbar';
-import { createCanvas, createTextBox, defaultOptions, ESTATE_KEY, getCanvasDetails, handleActiveObjectRemove, 
+import { createCanvas, createTextBox, defaultOptions, handleActiveObjectRemove, 
     handleMouseDown, listenEvent } from '../../utils/fabric';
-import { getLocalStorage, setLocalStorage } from '../../utils/functions';
 
 const Editor:React.FC = ():JSX.Element => {
-    const { fontSize, activeFont, memeData } = useSelector((state: { toolbar: IState, memes: IMemeState }) => 
+    const { fontSize, activeFont, memeData, memeDataLoading } = useSelector((state: { toolbar: IState, memes: IMemeState }) => 
         ({...state.toolbar, ...state.memes}));
     const dispatch = useDispatch();
     const params:{ memeId: string; } = useParams(); 
@@ -70,8 +69,21 @@ const Editor:React.FC = ():JSX.Element => {
 
     // const handleBlur = useCallback(() => canvas.discardActiveObject(), [canvas]);
 
-    return <div className="w-full h-full-minus-above bg-white rounded-3xl mt-5 flex items-center overflow-hidden">
-        <canvas id="meme_canvas" />
+    return <div className={`w-full h-full-minus-above bg-white rounded-3xl mt-5 flex items-center overflow-hidden relative 
+        ${memeDataLoading? "animate-pulse bg-gray-50":""}`}>
+        <canvas className={memeData?.state ? "":"hidden" } id="meme_canvas" />
+        {!memeDataLoading && !memeData?.state && <p className={`text-base text-primary-bold font-bold px-20 w-full 
+            text-center left-1/2 absolute origin-center block transform -translate-x-2/4`}>
+                <span>
+                    Hey There, Just click on the upload icon 👆
+                    to add a meme template background or just choose
+                    a template from your right.
+                </span>
+                <br/> 
+                Double click <span className="animate-ping">👆</span> on the Meme to add some text{" "}
+                <code className="bg-grey">Ctrl + Del</code>{" "}or{" "} 
+                <code className="bg-grey">Cmd + Del</code> to delete the selected Text
+            </p>}
     </div>;
 };
 

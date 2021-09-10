@@ -10,7 +10,7 @@ const MAX_CHAR = 30;
 
 const Title:React.FC<{ contentEditable?: boolean; }> = ({ children, contentEditable }):JSX.Element => {
     const [canEdit, setCanEdit] = useState(false);
-    const { memeData, loading } = useSelector((state: { memes:IState }) => state.memes);
+    const { memeData } = useSelector((state: { memes:IState }) => state.memes);
     const titleRef = useRef<HTMLDivElement | null>(null);
     const heading = useMemo(() => memeData?.heading||"", [memeData]);
     const dispatch = useDispatch();

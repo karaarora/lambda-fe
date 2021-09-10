@@ -20,6 +20,7 @@ import Upload from '../components/ToolBar/Upload';
 import getEditorModule from '../store/modules/editor';
 import getMemeModule from '../store/modules/meme';
 import getToolBarModule from '../store/modules/toolbar';
+import Logo from '../ui/Logo';
 import MainContainer from '../ui/MainContainer';
 import SideBarContainer from '../ui/SideBarConainer';
 import ToolBarContainer from '../ui/ToolBarContainer';
@@ -31,6 +32,7 @@ const Studio:React.FC = (): JSX.Element => {
     return <ErrorBoundaryWrapper> 
         <div className="flex h-screen">
             <SideBarContainer>
+                <Logo />
                 <DynamicModuleLoader modules={[getMemeModule()]}>
                     <Options type="status" />
                 </DynamicModuleLoader>

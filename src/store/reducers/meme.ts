@@ -11,11 +11,11 @@ const initialState:IState = {
     memes: [],
     memeData: null,
     filter: { ...initialFilter, type: "MEME" },
-    memeDataLoading: true,
+    memeDataLoading: false,
     selectedMeme: "",
     sortOptions: null,
     statusOptions: null,
-    loading: true,
+    loading: false,
     totalMemes: 0
 };
 

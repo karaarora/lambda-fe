@@ -10,14 +10,13 @@ import { setFilter, setLoader, setMemes } from '../../store/actions/meme';
 import { getMemes } from '../../store/thunk/meme';
 import { IState } from '../../store/types/meme';
 import ListingContainer from '../../ui/ListingContainer';
-import CardSkeleton from '../../ui/Skeleton/CardSkeleton';
-import { elementInViewport, triggerResizeEvent } from '../../utils/functions';
+import { triggerResizeEvent } from '../../utils/functions';
 import MemeCard from '../MemeCard';
 
 const Listing:React.FC<{
     isMasonry: boolean;
     isTemplate: boolean;
-}> = forwardRef(({ isMasonry, isTemplate }, containerRef:any):JSX.Element => {
+}> = forwardRef(({ isMasonry, isTemplate }):JSX.Element => {
     const { memes, loading, filter, selectedMeme, totalMemes } = useSelector((state: { memes:IState }) => state.memes);
     const dispatch = useDispatch();
     const listingRef = useRef<HTMLDivElement>(null);

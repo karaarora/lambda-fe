@@ -3,7 +3,7 @@ import { IState, SET_ACTIVE_OBJECT, SET_CANVAS, SET_LOADER, SetActiveObject, Set
 const initialState:IState = {
     canvas: null,
     activeObject: null,
-    loading: false
+    editorLoading: false
 };
 
 const editorReducer = (state = initialState, action: SetCanvas | SetLoader | SetActiveObject):IState => {
@@ -17,7 +17,7 @@ const editorReducer = (state = initialState, action: SetCanvas | SetLoader | Set
         case SET_LOADER: {
             return {
                 ...state,
-                loading: action.payload
+                editorLoading: action.payload
             };
         }
         case SET_ACTIVE_OBJECT: {

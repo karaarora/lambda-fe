@@ -16,7 +16,6 @@ export const loadFonts = (fonts:Font[]):void => {
       })
       .catch((error:any) => {
         rej(error);
-        console.log('warn', `Missing Font: ${font.family}`);
       });
   })));
 };

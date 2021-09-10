@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
@@ -13,12 +13,13 @@ import RestrictWrapper from '../components/RestrictWrapper';
 import Title from '../components/Title';
 import User from '../components/User';
 import getMemeModule from '../store/modules/meme';
-import Avatar from '../ui/Avatar';
+import Logo from '../ui/Logo';
 import MainContainer from '../ui/MainContainer';
 import SideBarContainer from '../ui/SideBarConainer';
 
 const HomePage = (): JSX.Element => <div className="flex">
         <SideBarContainer>
+            <Logo />
             <DynamicModuleLoader modules={[getMemeModule()]}>
                 <Options type="sort" />
             </DynamicModuleLoader>

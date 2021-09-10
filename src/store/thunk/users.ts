@@ -1,6 +1,5 @@
 import { Dispatch } from "react";
 import toast from "react-hot-toast";
-import { RootStateOrAny } from "react-redux";
 
 import { AxiosResponse } from "axios";
 import { AnyAction } from "redux";
@@ -11,8 +10,8 @@ import { setLoader, setUserData } from "../actions/users";
 import { UserData } from "../types/users";
 
 export const registerUser = (user: UserData & { password: string }) => (
-    dispatch:Dispatch<AnyAction>,
-    getState: () => RootStateOrAny):Promise<void> => request({
+    dispatch:Dispatch<AnyAction>
+):Promise<void> => request({
     url: `/register`,
     method: "POST",
     data: user
@@ -24,8 +23,8 @@ export const registerUser = (user: UserData & { password: string }) => (
 });
 
 export const loginUser = (user: { username:string; password: string; }) => (
-    dispatch:Dispatch<AnyAction>,
-    getState: () => RootStateOrAny):Promise<void> => request({
+    dispatch:Dispatch<AnyAction>
+):Promise<void> => request({
     url: `/login?${serialize(user)}`,
     method: "POST"
 }).then((res:AxiosResponse) => {

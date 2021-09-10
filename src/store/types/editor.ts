@@ -9,7 +9,7 @@ export const CLEAR_EDITOR_STATE = "CLEAR_EDITOR_STATE";
 export type IState = {
     canvas: fabric.Canvas | null;
     activeObject: fabric.Object | null;
-    loading: boolean;
+    editorLoading: boolean;
 }
 
 export type SetCanvas = {

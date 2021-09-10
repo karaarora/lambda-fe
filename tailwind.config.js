@@ -19,7 +19,8 @@ module.exports = {
         'xxs': "10rem"
       },
       colors: {
-        primary: "#3498db",
+        // primary: "#3498db",
+        primary: "#46413b",
         white: "#fff",
         grey: "#ecf0f1",
         transparent: "transparent"
@@ -29,7 +30,8 @@ module.exports = {
       },
       textColor: {
         'primary': {
-          bold: "#7b7b7b",
+          // bold: "#7b7b7b",
+          bold: "#46413b",
           normal: "#9a9a9a"
         },
         white: "#fff"
