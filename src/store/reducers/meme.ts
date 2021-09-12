@@ -1,16 +1,12 @@
-import { getQuery } from "../../utils/functions";
-import { IState, SET_FILTERS, SET_LOADER, SET_MEME_DATA, SET_MEME_DATA_LOADING,
-    SET_MEMES, SET_SELECTED_MEME, SET_SORT_OPTIONS, SET_STATUS_OPTIONS, SET_TOTAL_MEMES, SetFilters, 
-    SetLoader, SetMemeData, SetMemeDataLoading, SetMemes, SetSelectedMeme, SetSortOptions, 
-    SetStatusOptions, SetTotalMemes } from "../types/meme";
+import { CLEAR_MEME_STATE, ClearMemeState, IState, SET_FILTERS, SET_LOADER,
+    SET_MEME_DATA, SET_MEME_DATA_LOADING, SET_MEMES, SET_SELECTED_MEME, SET_SORT_OPTIONS, SET_STATUS_OPTIONS, 
+    SET_TOTAL_MEMES, SetFilters, SetLoader, SetMemeData, SetMemeDataLoading, SetMemes, 
+    SetSelectedMeme, SetSortOptions, SetStatusOptions, SetTotalMemes } from "../types/meme";
 
-const query = getQuery();
-const sort = query.get('sort');
-const initialFilter = sort && { sort };
 const initialState:IState = {
     memes: [],
     memeData: null,
-    filter: { ...initialFilter, type: "MEME" },
+    filter: null,
     memeDataLoading: false,
     selectedMeme: "",
     sortOptions: null,
@@ -21,7 +17,7 @@ const initialState:IState = {
 
 const memeReducer = (state = initialState, action: SetMemes | SetFilters | SetLoader 
     | SetMemeData | SetMemeDataLoading | SetSelectedMeme | SetSortOptions | SetStatusOptions
-    | SetTotalMemes):IState => {
+    | SetTotalMemes | ClearMemeState):IState => {
     switch(action.type) {
         case SET_MEMES: {
             return {
@@ -76,6 +72,9 @@ const memeReducer = (state = initialState, action: SetMemes | SetFilters | SetLo
                 ...state,
                 totalMemes: action.payload
             };
+        }
+        case CLEAR_MEME_STATE: {
+            return initialState;
         }
         default: return state;
     }

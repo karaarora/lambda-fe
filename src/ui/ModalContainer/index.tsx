@@ -26,6 +26,7 @@ const ModalContainer:React.FC<{
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black 
                     float-right text-3xl leading-none font-semibold outline-none 
+                    transition transform-all hover:opacity-75
                     focus:outline-none absolute right-0 top-0 transform -translate-y-2/4 translate-x-2/4"
                     onClick={handleClose}
                     type="button"

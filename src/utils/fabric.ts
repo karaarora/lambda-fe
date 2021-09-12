@@ -53,7 +53,9 @@ export const addTextBox = (canvas:fabric.Canvas,options: fabric.ITextboxOptions)
     const textBox = new fabric.Textbox('Sample Text', {...options,...defaultOptions});
     canvas.add(textBox);
     canvas.renderAll();
-    canvas.setActiveObject(textBox);
+    setTimeout(() => {
+        canvas.setActiveObject(textBox);
+    }, 0);
 };
 
 export const updateTextBox = (canavs:fabric.Canvas,textbox:fabric.Textbox,object:fabric.ITextboxOptions):void => {

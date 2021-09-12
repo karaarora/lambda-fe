@@ -3,20 +3,19 @@ import { Link } from 'react-router-dom';
 
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
 
-import AuthWrapper from '../components/AuthWrapper';
 import Editor from '../components/Editor';
-import ErrorBoundaryWrapper from '../components/ErrorBoundaryWrapper';
 import Listing from '../components/Listing';
 import ListingSearch from '../components/ListingSearch';
+import Title from '../components/Meme/Title';
 import Options from '../components/Options';
-import RestrictWrapper from '../components/RestrictWrapper';
-import Title from '../components/Title';
 import FontSelect from '../components/ToolBar/Font/FontSelect';
 import FontSizeSelect from '../components/ToolBar/Font/FontSizeSelect';
-import Publish from '../components/ToolBar/Publish';
-import Save from '../components/ToolBar/Save';
-import Template from '../components/ToolBar/Template';
+import MemeAction from '../components/ToolBar/MemeAction';
 import Upload from '../components/ToolBar/Upload';
+import User from '../components/User';
+import AuthWrapper from '../components/Wrappers/AuthWrapper';
+import ErrorBoundaryWrapper from '../components/Wrappers/ErrorBoundaryWrapper';
+import RestrictWrapper from '../components/Wrappers/RestrictWrapper';
 import getEditorModule from '../store/modules/editor';
 import getMemeModule from '../store/modules/meme';
 import getToolBarModule from '../store/modules/toolbar';
@@ -24,6 +23,7 @@ import Logo from '../ui/Logo';
 import MainContainer from '../ui/MainContainer';
 import SideBarContainer from '../ui/SideBarConainer';
 import ToolBarContainer from '../ui/ToolBarContainer';
+import ToolTip from '../ui/Tooltip';
 import { clearFonts } from '../utils/fonts';
 
 const Studio:React.FC = (): JSX.Element => {
@@ -37,14 +37,17 @@ const Studio:React.FC = (): JSX.Element => {
                     <Options type="status" />
                 </DynamicModuleLoader>
                 <Link 
-                    className="bg-primary rounded-3xl py-2 px-5 text-white w-fit mt-4"
+                    className="bg-primary rounded-3xl py-2 px-5 text-white w-fit mt-4 transition transform-all hover:opacity-75"
                     to="/"
                 >
                     Exit Studio
                 </Link>
             </SideBarContainer>
             <MainContainer className="p-8">
-                <Title contentEditable>This is my Heading</Title>
+                <DynamicModuleLoader modules={[getMemeModule()]}>
+                    <Title contentEditable>This is my Heading</Title>
+                </DynamicModuleLoader>
+                <User isTemplate />
                 <DynamicModuleLoader modules={[getToolBarModule(),getEditorModule()]}>
                     <ToolBarContainer>
                         <div className="flex w-1/2 sm:w-2/5">
@@ -52,14 +55,22 @@ const Studio:React.FC = (): JSX.Element => {
                                 <FontSelect />
                                 <FontSizeSelect />
                             </RestrictWrapper>
-                            <DynamicModuleLoader modules={[getEditorModule()]}>
+                            <ToolTip position="bottom-full" value="Upload Background Image">
                                 <Upload />
-                            </DynamicModuleLoader>
+                            </ToolTip>
                         </div>
                         <AuthWrapper>
-                            <Template />
-                            <Save />
-                            <Publish />
+                            <div className="flex items-center">
+                                <ToolTip position="bottom-full" value="Create a Template">
+                                    <MemeAction action="create_template" />
+                                </ToolTip>
+                                <ToolTip position="bottom-full" value="Save">
+                                    <MemeAction action="save_meme" />
+                                </ToolTip>
+                                <ToolTip position="bottom-full" value="Publish">
+                                    <MemeAction action="publish_meme" />
+                                </ToolTip>
+                            </div>
                         </AuthWrapper>
                     </ToolBarContainer>
                 </DynamicModuleLoader>

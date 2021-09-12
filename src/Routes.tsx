@@ -8,8 +8,8 @@ import {
 
 import PageSkeleton from "./ui/Skeleton/PageSkeleton";
 
-const HomePage = lazy(() => import("./pages/homepage"));
-const Studio = lazy(() => import("./pages/studio"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const Studio = lazy(() => import("./pages/Studio"));
 
 const Routes = (): JSX.Element => (
     <Router>

@@ -6,9 +6,10 @@ import { ReactComponent as Download } from '../../assets/icons/download.svg';
 import { ReactComponent as Eye } from '../../assets/icons/eye.svg';
 import { ReactComponent as LeftIcon } from '../../assets/icons/leftarrow.svg';
 import { ReactComponent as Pencil } from '../../assets/icons/pencil.svg';
-import { ReactComponent as Share } from '../../assets/icons/share.svg';
 import { ReactComponent as ThumbDown } from '../../assets/icons/thumbdown.svg';
 import { ReactComponent as ThumbUp } from '../../assets/icons/thumbup.svg';
+import ShareMeme from '../../components/ToolBar/ShareMeme';
+import AuthWrapper from '../../components/Wrappers/AuthWrapper';
 import { Meme } from '../../store/types/meme';
 import Image from '../Image';
 
@@ -16,11 +17,16 @@ const Detail:React.FC<{
     data:Meme|null;
     handleClose: () => void; 
     handleEdit: () => void;
-}> = ({ data, handleClose, handleEdit }):JSX.Element => (
+    isLiked: boolean;
+    isDisLiked: boolean;
+    handleLike: () => void;
+    handleDisLike: () => void;
+    handleDownload: () => void;
+}> = ({ data, handleClose, handleEdit, isLiked, isDisLiked, handleDisLike, handleLike, handleDownload }):JSX.Element => (
     <div className="flex flex-col h-screen">
         <div className="flex justify-between items-center my-4 flex-none">
             <div onClick={() => handleClose()}>
-                <LeftIcon className="w-8 h-8 cursor-pointer" />
+                <LeftIcon className="cursor-pointer w-8 h-8 hover:scale-125 transform active:scale-100"  />
             </div>
             <div className="flex items-center">
                 <Eye />
@@ -33,19 +39,33 @@ const Detail:React.FC<{
         <div className="my-2 flex-none">
             <div className="flex justify-between items-center">
                 <div className="flex-grow">
-                    <div className="text-xs text-primary-normal text-lg truncate">{data?.user_id}</div>
+                    <div className="text-xs text-primary-normal text-lg truncate">{data?.user?.username}</div>
                     <div className="text-sm text-primary-bold font-medium text-xl truncate">{data?.heading}</div>
                 </div>
-                <div className="flex w-14 justify-between flex-none">
-                    <ThumbUp />
-                    <ThumbDown />   
-                </div>
+                <AuthWrapper>
+                    <div className="flex justify-between flex-none">
+                        <ThumbUp 
+                            className={`cursor-pointer w-6 hover:scale-125 transform active:scale-100 mr-2 
+                            ${isLiked? "text-blue-400":"text-primary-bold"}`}
+                            onClick={() => handleLike()} />
+                        {!!data?.likes.length && <span className="text-sm text-primary-nomral">
+                            {data?.likes.length}</span>}
+                        <ThumbDown 
+                            className={`cursor-pointer w-6 hover:scale-125 transform active:scale-100 mx-2
+                                ${isDisLiked? "text-red-400":"text-primary-bold"}`}
+                            onClick={() => handleDisLike()} />
+                        {!!data?.dislikes.length && <span className="text-sm text-primary-nomral">
+                            {data?.dislikes.length}</span>} 
+                    </div>
+                </AuthWrapper>
             </div>
         </div>
         <div className="flex items-center mt-2 w-24 justify-between flex-none">
-            <Share />
-            <Download />
-            <Pencil onClick={() => handleEdit()} />
+            <ShareMeme link={data?.image_url||""} />
+            <Download className="cursor-pointer w-6 hover:scale-125 transform active:scale-100"  
+                onClick={() => handleDownload()}
+            />
+            <Pencil className="cursor-pointer w-6 hover:scale-125 transform active:scale-100"  onClick={() => handleEdit()} />
         </div>
     </div>
 );

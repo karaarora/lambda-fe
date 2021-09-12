@@ -3,18 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { fabric } from 'fabric';
-import { IEvent } from 'fabric/fabric-impl';
 
 import { setActiveObject, setCanvas } from '../../store/actions/editor';
 import { getMemeData } from '../../store/thunk/meme';
+import { IState as IEditorState } from '../../store/types/editor';
 import { IState as IMemeState } from '../../store/types/meme';
 import { IState } from '../../store/types/toolbar';
-import { createCanvas, createTextBox, defaultOptions, handleActiveObjectRemove, 
-    handleMouseDown, listenEvent } from '../../utils/fabric';
+import { addImage, createCanvas, createTextBox, defaultOptions, handleActiveObjectRemove, 
+    listenEvent } from '../../utils/fabric';
 
 const Editor:React.FC = ():JSX.Element => {
-    const { fontSize, activeFont, memeData, memeDataLoading } = useSelector((state: { toolbar: IState, memes: IMemeState }) => 
-        ({...state.toolbar, ...state.memes}));
+    const { fontSize, activeFont, memeData, memeDataLoading, canvas:canvasState, editorLoading } = useSelector(
+        (state: { toolbar: IState, memes: IMemeState, editor: IEditorState }) => 
+        ({...state.toolbar, ...state.memes, ...state.editor}));
     const dispatch = useDispatch();
     const params:{ memeId: string; } = useParams(); 
     
@@ -26,54 +27,57 @@ const Editor:React.FC = ():JSX.Element => {
     useEffect(() => {
         const canvas:fabric.Canvas = createCanvas('meme_canvas',{ containerClass: "mx-auto" });
         
-        if(memeData?.state) {
-            const state = JSON.parse(memeData?.state||"");
-            canvas.loadFromJSON(state,() => {
-                if(canvas.backgroundImage){ 
-                    const { width, height } = canvas.backgroundImage as fabric.Image;
-                    canvas.setWidth(width as number);
-                    canvas.setHeight(height as number);
-                }
-                canvas.getObjects().forEach((object:fabric.Object)=>{
-                    object.set(defaultOptions);
-                });
-                canvas.renderAll();
-            }); 
-        }
-        dispatch(setCanvas(canvas));
-        
         const handleDBClick = (e:any) => createTextBox(e,canvas,
             { fontSize: parseInt(fontSize,10), fontFamily: activeFont?.family || "" });
-
-        const handleSelection = (e:IEvent<Event>) => handleMouseDown(e,(value:fabric.Object|null) => 
-            dispatch(setActiveObject(value)) );
             
         const handleKeyDown = (e:KeyboardEvent) => handleActiveObjectRemove(e as any, canvas);
 
         document.addEventListener('keydown', handleKeyDown);
         listenEvent(canvas,"mouse:dblclick",handleDBClick);
-        listenEvent(canvas,"mouse:down",handleSelection);
+        listenEvent(canvas,"selection:created",(e) => dispatch(setActiveObject(e.target)));
+        listenEvent(canvas,"selection:cleared",() => dispatch(setActiveObject(null)));
+        listenEvent(canvas,"selection:cleared",() => dispatch(setActiveObject(null)));
+        canvas.renderAll();
         (window as any).canvas = canvas; 
+        dispatch(setCanvas(canvas));
 
         return () => {
-            // const { state } = getCanvasDetails(canvas);
-            // setLocalStorage(ESTATE_KEY,state);
             document.removeEventListener('keydown', handleKeyDown);
             canvas.off("mouse:dblclick",handleDBClick);
-            canvas.off("mouse:down",handleSelection);
+            canvas.off("selection:created",(e:any) => dispatch(setActiveObject(e.target)));
+            canvas.off("selection:cleared",() => dispatch(setActiveObject(null)));
             canvas.removeListeners();
             canvas.clear();
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    
+    useEffect(() => {
+        if(memeData?.state && memeData?.state !== "true" && canvasState) {
+            canvasState.clear();
+            const state = JSON.parse(memeData?.state||"");
+            canvasState.loadFromJSON(state,() => {
+                if(canvasState.backgroundImage){ 
+                    const { src } = canvasState.backgroundImage as any;
+                    addImage(canvasState,src);
+                }
+                canvasState.getObjects().forEach((object:fabric.Object)=>{
+                    object.set(defaultOptions);
+                });
+                canvasState.renderAll();
+            }); 
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [memeData?.state]);
 
     // const handleBlur = useCallback(() => canvas.discardActiveObject(), [canvas]);
 
-    return <div className={`w-full h-full-minus-above bg-white rounded-3xl mt-5 flex items-center overflow-hidden relative 
-        ${memeDataLoading? "animate-pulse bg-gray-50":""}`}>
-        <canvas className={memeData?.state ? "":"hidden" } id="meme_canvas" />
-        {!memeDataLoading && !memeData?.state && <p className={`text-base text-primary-bold font-bold px-20 w-full 
-            text-center left-1/2 absolute origin-center block transform -translate-x-2/4`}>
+    return <div className={`w-full h-full-minus-above bg-white rounded-3xl mt-5 flex items-center overflow-hidden 
+        ${(!memeDataLoading && !editorLoading) && !memeData?.state ? "relative":""} 
+        ${memeDataLoading||editorLoading? "animate-pulse bg-gray-50":""}`}>
+        <canvas id="meme_canvas" />
+        {(!memeDataLoading && !editorLoading) && !memeData?.state && <p className={`text-base text-primary-bold
+            font-bold px-20 w-full text-center left-1/2 absolute origin-center block transform -translate-x-2/4`}>
                 <span>
                     Hey There, Just click on the upload icon 👆
                     to add a meme template background or just choose

@@ -5,13 +5,12 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { BASE_URL } from './env';
 import { getCookie } from './functions';
 
-const token:string = getCookie("me_token");
 /**
  * Create an Axios Client with defaults
  */
-const client = axios.create({
+export const client = axios.create({
   baseURL: BASE_URL,
-  headers: token ? { token } : null
+  headers: getCookie("me_token") ?  { Authorization: `Bearer ${getCookie("me_token")}` }:undefined
 });
 
 /**

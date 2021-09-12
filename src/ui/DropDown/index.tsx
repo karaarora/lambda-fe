@@ -28,7 +28,7 @@ tabIndex={0}>
             <span className="mr-2"><DownIcon /></span>
         </div>
         {show && <div className="absolute bg-white rounded-xl overflow-hidden 
-        border border-solid border-4 border-gray-200 min-w-full max-w-xxs z-10">
+        border border-solid border-4 border-gray-200 min-w-full max-w-xxs z-100">
             {children}
         </div>}
     </div>;

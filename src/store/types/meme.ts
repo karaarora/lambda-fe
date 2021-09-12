@@ -8,6 +8,7 @@ export const SET_SORT_OPTIONS = "SET_SORT_OPTIONS";
 export const SET_STATUS_OPTIONS = "SET_STATUS_OPTIONS";
 export const SET_LOADER = "SET_LOADER";
 export const SET_TOTAL_MEMES = "SET_TOTAL_MEMES";
+export const CLEAR_MEME_STATE = "CLEAR_MEME_STATE";
 
 export type IState = {
     memes: Meme[];
@@ -84,13 +85,19 @@ export type Filters = {
     status?: "SAVED"|"PUBLISHED",
     query?: string;
     page?: number;
+    showAllMemes?: boolean;
     type?: "TEMPLATE"|"MEME"
 }
 
 export type Meme = {
     id: string;
     heading: string;
-    user_id: number;
+    likes: string[];
+    dislikes: string[];
+    user: {
+        _id: string;
+        username: string;
+    }
     thumbnail_url: string;
     image_url: string;
     view_count: number;
@@ -102,4 +109,13 @@ export type Meme = {
 export type SetTotalMemes = {
     type: typeof SET_TOTAL_MEMES;
     payload: number;
+}
+
+export type ClearMemeState = {
+    type: typeof CLEAR_MEME_STATE;
+}
+
+export type LikePyload = {
+    memeId: string;
+    action: "LIKE"|"DISLIKE"|"UNLIKE"|"UNDISLIKE"
 }

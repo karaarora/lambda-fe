@@ -1,7 +1,9 @@
-import { Filters, Meme, Options, SET_FILTERS, 
-    SET_LOADER, SET_MEME_DATA, SET_MEME_DATA_LOADING, SET_MEMES, SET_SELECTED_MEME, SET_SORT_OPTIONS, 
-    SET_STATUS_OPTIONS, SET_TOTAL_MEMES, SetFilters, SetLoader, SetMemeData, SetMemeDataLoading, 
-    SetMemes, 
+import { CLEAR_MEME_STATE, ClearMemeState, Filters, Meme, 
+    Options, SET_FILTERS, SET_LOADER, SET_MEME_DATA, SET_MEME_DATA_LOADING, SET_MEMES, 
+    SET_SELECTED_MEME, SET_SORT_OPTIONS, SET_STATUS_OPTIONS, SET_TOTAL_MEMES, SetFilters, SetLoader, 
+    SetMemeData, 
+    SetMemeDataLoading,
+    SetMemes,
     SetSelectedMeme,
     SetSortOptions,
     SetStatusOptions,
@@ -56,4 +58,8 @@ export const setStatusOptions = (payload: {
 export const setTotalMemes = (payload: number):SetTotalMemes => ({
     type: SET_TOTAL_MEMES,
     payload
+});
+
+export const clearMemeState = ():ClearMemeState => ({
+    type: CLEAR_MEME_STATE
 });

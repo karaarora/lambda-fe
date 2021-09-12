@@ -1,23 +1,42 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-underscore-dangle */
 import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useInfiniteLoader, useMasonry, usePositioner, useResizeObserver } from "masonic";
 import { useScroller, useSize } from 'mini-virtual-list';
 
-import { setFilter, setLoader, setMemes } from '../../store/actions/meme';
+import { clearMemeState, setFilter, setLoader, setMemes } from '../../store/actions/meme';
 import { getMemes } from '../../store/thunk/meme';
 import { IState } from '../../store/types/meme';
+import { IState as IUserState } from '../../store/types/users';
 import ListingContainer from '../../ui/ListingContainer';
-import { triggerResizeEvent } from '../../utils/functions';
-import MemeCard from '../MemeCard';
+import { getQuery, triggerResizeEvent } from '../../utils/functions';
+import MemeCard from '../Meme/MemeCard';
+
+const params = getQuery();
+const sort:any = params.get("sort");
+const status:any = params.get("status");
+const defaultTemplateFilters = {
+    type: "TEMPLATE",
+    showAllMemes: false,
+    status: status||"ALL",
+    sort: "",
+    query: ""
+};
+
+const defaultFilters = {
+    type: "MEME",
+    status: "PUBLISHED",
+    showAllMemes: true,
+    sort: sort||"TRENDING",
+    query: ""
+};
 
 const Listing:React.FC<{
     isMasonry: boolean;
     isTemplate: boolean;
 }> = forwardRef(({ isMasonry, isTemplate }):JSX.Element => {
-    const { memes, loading, filter, selectedMeme, totalMemes } = useSelector((state: { memes:IState }) => state.memes);
+    const { memes, loading, filter, selectedMeme, totalMemes, userData } = 
+        useSelector((state: { memes:IState, users: IUserState }) => ({...state.memes,...state.users}));
     const dispatch = useDispatch();
     const listingRef = useRef<HTMLDivElement>(null);
     const fetchRef = useRef<HTMLDivElement>(null);
@@ -55,21 +74,27 @@ const Listing:React.FC<{
       width,
       columnWidth: 188,
       columnGutter: 6
-    }, [loadableMemes]);
+    }, [loadableMemes,memes]);
     const resizeObserver = useResizeObserver(positioner);
 
     useEffect(() => {
         triggerResizeEvent();
     }, [memes]);
 
+    useEffect(() => () => dispatch(clearMemeState()) as any, [dispatch]);
+
     useEffect(() => {
-        if(!loading) dispatch(setLoader(true));
-        if(isTemplate) dispatch(setFilter({ ...filter, type: "TEMPLATE" }));
-        dispatch(getMemes(isTemplate ? {...filter,type: "TEMPLATE"} : filter));
+        dispatch(setLoader(true));
+        
+        dispatch(setFilter(isTemplate ? defaultTemplateFilters :defaultFilters as any));
+
+        dispatch(getMemes(isTemplate ? defaultTemplateFilters :defaultFilters));
+
         return () => {
             dispatch(setMemes([]));
+            dispatch(setFilter(null));
         };
-    }, [filter?.query, isTemplate]);
+    }, [dispatch, isTemplate, userData]);
     
     return <ListingContainer isCollapsed={!!selectedMeme} isMasonry={isMasonry} ref={listingRef}>
         {useMasonry({

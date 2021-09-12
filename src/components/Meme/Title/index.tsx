@@ -2,17 +2,19 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ReactComponent as EditIcon } from '../../assets/icons/pencil.svg';
-import { setMemeData } from '../../store/actions/meme';
-import { IState, Meme } from '../../store/types/meme';
+import { ReactComponent as EditIcon } from '../../../assets/icons/pencil.svg';
+import { setMemeData } from '../../../store/actions/meme';
+import { IState, Meme } from '../../../store/types/meme';
 
 const MAX_CHAR = 30;
 
 const Title:React.FC<{ contentEditable?: boolean; }> = ({ children, contentEditable }):JSX.Element => {
     const [canEdit, setCanEdit] = useState(false);
-    const { memeData } = useSelector((state: { memes:IState }) => state.memes);
+    const { memeData,loading,sortOptions } = useSelector((state: { memes:IState }) => state.memes);
     const titleRef = useRef<HTMLDivElement | null>(null);
     const heading = useMemo(() => memeData?.heading||"", [memeData]);
+    const listingTitle:string = useMemo(() => 
+        ((sortOptions as any)?.options||[]).find((option:any) => option.isSelected)?.displayText || "", [sortOptions]);
     const dispatch = useDispatch();
     
     const handleEdit = useCallback(() => {
@@ -37,8 +39,8 @@ const Title:React.FC<{ contentEditable?: boolean; }> = ({ children, contentEdita
             node.textContent = (node.textContent || "").slice(0, MAX_CHAR);
         };
         setCanEdit(false);
-        dispatch(setMemeData({ heading: node?.textContent || "This is my Heading" } as Meme));
-    }, [dispatch, titleRef]);
+        dispatch(setMemeData({ ...memeData,heading: (node?.textContent || "This is my Heading") } as Meme));
+    }, [dispatch, memeData ]);
 
     const handleKeyDown = useCallback((e:KeyboardEvent) => {
         if(e.key === "Escape" || e.key === "Enter") {
@@ -55,13 +57,13 @@ const Title:React.FC<{ contentEditable?: boolean; }> = ({ children, contentEdita
             if(node)
             node.removeEventListener('keydown',handleKeyDown);
         };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [handleKeyDown]);
 
-    return <div className={` text-xl text-primary-bold font-bold flex p-2 whitespace-nowrap overflow-hidden 
-        ${canEdit ? 'w-11/12 break-all': ''}`} contentEditable={canEdit}
+    return <div className={` text-xl text-primary-bold font-bold flex p-2 whitespace-nowrap overflow-hidden capitalize
+        ${canEdit ? 'w-11/12 break-all': ''} ${loading? "w-40 h-12 bg-white rounded-xl animate-pulse":""}`} 
+        contentEditable={canEdit}
         onBlur={handleBlur} ref={titleRef}>
-        {contentEditable ? (heading||children) : children}
+        {contentEditable ? (heading||children) : `${listingTitle} Memes`}
         {!canEdit && contentEditable && <EditIcon className="w-6 h-6 ml-2 cursor-pointer" onClick={handleEdit} />}
     </div>;
 };

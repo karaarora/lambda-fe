@@ -1,16 +1,25 @@
+import toast from 'react-hot-toast';
+
 import Cookies from 'universal-cookie';
 
-const cookies = new Cookies();
+export const cookies = new Cookies();
  
 let timer:any;
 
 export const debounce = (action: (...args:any[]) => void ,time:number):void =>  {
-        clearTimeout(timer);
-        timer = setTimeout(() => { action(); }, time);
-    };
+  clearTimeout(timer);
+  timer = setTimeout(() => { action(); }, time);
+};
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const serialize = (obj:any):string => new URLSearchParams(obj).toString();
+export const serialize = (obj:any):string => {
+  const keys = Object.keys(obj);
+  const filteredKeys = keys.filter((key:string) => !!obj[key]);
+  const newObj = filteredKeys.reduce((acc:any,val:string) => (
+    {...acc,[val]: obj[val] }
+  ), {});
+  return (newObj? new URLSearchParams(newObj).toString():"");
+};
 
 export const getQuery = ():URLSearchParams => new URLSearchParams(window.location.search);
 
@@ -66,4 +75,33 @@ export const getCookie = (key:string):string => cookies.get(key);
 
 export const removeCookie = (key:string):void => {
   cookies.remove(key);
+};
+
+export const getBase64 = (file:File):any => new Promise((res:any) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => {
+    res(reader.result,false);
+  };
+  reader.onerror = () => {
+    res(reader.result,true);
+  };
+});
+
+export const downloadMeme = (fileURL: string, fileName: string):void => {
+  fetch(fileURL)
+    .then(resp => resp.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      // the filename you want
+      const extension = fileURL.split('.').pop();
+      a.download = fileName.endsWith(`.${extension}`)?fileName: `${fileName}.${extension}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(() => toast.error('Something went wrong please try again!'));
 };

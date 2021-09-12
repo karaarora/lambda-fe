@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { setFilter, setLoader } from '../../store/actions/meme';
+import { setFilter, setLoader, setMemes, setSortOptions, setStatusOptions } from '../../store/actions/meme';
 import { getMemes } from '../../store/thunk/meme';
 import { IState, Options as OptionsType } from '../../store/types/meme';
 import OrderedList from '../../ui/OrderedList';
@@ -27,12 +27,28 @@ const Options:React.FC<{
             onClick: () => {
                 if(!option.isSelected && !loading) {
                     if(!loading) dispatch(setLoader(true));
-                    dispatch(getMemes({...filter,[type]: option.key }));
-                    dispatch(setFilter({...filter,[type as any]: option.key }));
+                    // dispatch(getMemes({...filter,[type]: option.key,query:"" }));
+                    dispatch(setFilter({...filter,[type as any]: option.key,query: "" }));
+                    dispatch(setLoader(true));
+                    dispatch(setMemes([]));
+                    dispatch(getMemes({...filter,[type as any]: option.key,query: "" }));
+                    const newOptions:any = options?.options;
+                    for(let i=0;i<newOptions?.length;i += 1){
+                        newOptions[i].isSelected = false;
+                        if(newOptions[i].key === option.key){
+                            newOptions[i].isSelected = true;
+                        }
+                    }
+                    if(type === "sort"){
+                        dispatch(setSortOptions({...options,options: newOptions} as any));
+
+                    } else {
+                        dispatch(setStatusOptions({...options,options: newOptions} as any));
+                    }
                 }
             }
         }
-    )) as any,[dispatch, filter, history.location.pathname, loading, options?.options, type]);
+    )) as any,[dispatch, filter, history.location.pathname, loading, options, type]);
 
     if(loading && !list.length)
     return <OptionsSkeleton />;

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setActiveFont } from '../../../store/actions/toolbar';
-import getFonts from '../../../store/thunk/toolbar';
+import { getFonts } from '../../../store/thunk/toolbar';
 import { IState as EditorIState } from '../../../store/types/editor';
 import { Font, IState as ToolBarIState } from '../../../store/types/toolbar';
 import DropDown from '../../../ui/DropDown';
