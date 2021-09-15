@@ -14,17 +14,12 @@ const ListingSearch:React.FC = ():JSX.Element => {
 
     const handleOnChange = useCallback((e:React.ChangeEventHandler<HTMLInputElement>|any) => {
         setValue(e.target.value);
-        if(e.target.value){
-            debounce(() => {
-                dispatch(setFilter({ ...filter,query:  e.target.value }));
-                dispatch(setLoader(true));
-                dispatch(setMemes([]));
-                dispatch(getMemes({ ...filter,query:  e.target.value }));
-            },800);
-        } else {
-            const { query, ...rest } = filter as any;
-            dispatch(setFilter(rest));
-        }
+        debounce(() => {
+            dispatch(setFilter({ ...filter,query:  e.target.value }));
+            dispatch(setLoader(true));
+            dispatch(setMemes([]));
+            dispatch(getMemes({ ...filter,query:  e.target.value }));
+        },800);
     }, [dispatch, filter]);
 
     useEffect(() => {
@@ -32,7 +27,7 @@ const ListingSearch:React.FC = ():JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter?.query]);
 
-    return <Input className="mr-4" onChange={handleOnChange} placeholder="Search"
+    return <Input className="mx-3" onChange={handleOnChange} placeholder="Search"
         type="text" value={value} />;
 };
 

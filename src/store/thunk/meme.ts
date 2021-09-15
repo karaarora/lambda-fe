@@ -65,7 +65,7 @@ export const likeMeme = ({ memeId, action ,userId}:LikePyload & { userId: string
     url: `/like`,
     method: "POST",
     data: { memeId, action }
-}).then(() => {
+}).catch(() => {
     const { memes: { memes,memeData } } = getState();
     const memeIndex:number = memes.findIndex((m:any) => m.id === memeId);
     let newMeme;
@@ -73,9 +73,9 @@ export const likeMeme = ({ memeId, action ,userId}:LikePyload & { userId: string
         const likes = memes[memeIndex].likes.filter((l:any) => l !== userId);
         const dislikes = memes[memeIndex].dislikes.filter((l:any) => l !== userId);
         if(action === "LIKE"){
-            newMeme = {...memes[memeIndex],likes: [...likes,userId ], dislikes};
+            newMeme = {...memes[memeIndex],likes};
         } else {
-            newMeme = {...memes[memeIndex],dislikes: [...dislikes,userId ],likes};
+            newMeme = {...memes[memeIndex],dislikes};
         }
         memes[memeIndex] = newMeme;
         dispatch(setMemeData({...memeData,...newMeme}));

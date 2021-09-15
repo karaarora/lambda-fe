@@ -3,16 +3,17 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 
-import { setMemeDataLoading, setSelectedMeme } from "../../../store/actions/meme";
+import { setMemeData, setMemeDataLoading, setMemes, setSelectedMeme } from "../../../store/actions/meme";
 import { likeMeme } from "../../../store/thunk/meme";
 import { IState, Meme } from "../../../store/types/meme";
 import { IState as IUserState } from "../../../store/types/users";
 import Card from "../../../ui/Card";
 import CardSkeleton from "../../../ui/Skeleton/CardSkeleton";
-import { triggerResizeEvent } from "../../../utils/functions";
+import { triggerResizeEvent, update } from "../../../utils/functions";
 
 const MemeCard:React.FC<{ data: Meme }> = ({ data }):JSX.Element => {
-    const { selectedMeme, memeDataLoading, userData } = useSelector((state: { memes:IState,users: IUserState }) => 
+    const { selectedMeme, memeDataLoading, userData, memes, memeData } = 
+        useSelector((state: { memes:IState,users: IUserState }) => 
         ({...state.memes,...state.users}));
     const isTemplate = useMemo(() => (data?.type === "TEMPLATE"), [data?.type]);
     const dispatch = useDispatch();
@@ -34,20 +35,26 @@ const MemeCard:React.FC<{ data: Meme }> = ({ data }):JSX.Element => {
         }
     }, [isTemplate, params.memeId, history, selectedMeme, data.id, memeDataLoading, dispatch]);
 
-    const handleLike = useCallback(() => {
+    const handleLike = useCallback((action: "LIKE"|"DISLIKE") => {
         if(!userData) return;
-        dispatch(likeMeme({ memeId: data.id, action: "LIKE",userId: userData?.id as string }));
-    }, [data.id, dispatch, userData]);
-
-    const handleDisLike = useCallback(() => {
-        if(!userData) return;
-        dispatch(likeMeme({ memeId: data.id, action: "DISLIKE",userId: userData?.id as string}));
-    }, [data.id, dispatch, userData]);
+        const likes = data.likes.filter((l:any) => l !== userData?.id);
+        const dislikes = data.dislikes.filter((l:any) => l !== userData?.id);
+        if(likes.length < data?.likes.length && action === "LIKE") return; 
+        if(dislikes.length < data?.dislikes.length && action === "DISLIKE") return;
+        dispatch(likeMeme({ memeId: data.id, action,userId: userData?.id as string }));
+        const newMeme = {...data,
+            likes: action === "LIKE" ? [...likes,userData?.id]:likes,
+            dislikes: action === "DISLIKE" ? [...dislikes,userData?.id]:dislikes
+        };
+        dispatch(setMemes(update(memes,newMeme,(v) => v.id === data.id)));
+        if(memeData)
+        dispatch(setMemeData({...memeData,...newMeme}));
+    }, [data, dispatch, memeData, memes, userData]);
 
     if((data as any)?.isLoading)
     return <CardSkeleton isTemplate={isTemplate} />;
 
-    return <Card data={data} handleClick={handleClick} handleDisLike={handleDisLike} 
+    return <Card data={data} handleClick={handleClick}
         handleLike={handleLike} isDisLiked={isDisLiked} isLiked={isLiked} 
         isTemplate={isTemplate}
     />;

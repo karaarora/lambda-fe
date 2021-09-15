@@ -9,7 +9,7 @@ import request from "../../utils/request";
 import { setLoader, setUserData } from "../actions/users";
 import { UserData } from "../types/users";
 
-export const registerUser = (user: UserData & { password: string }) => (
+export const registerUser = (user: UserData & { password: string }, callback?:() => void) => (
     dispatch:Dispatch<AnyAction>
 ):Promise<void> => request({
     url: `/register`,
@@ -18,11 +18,12 @@ export const registerUser = (user: UserData & { password: string }) => (
 }).then((res:AxiosResponse) => {
     if(typeof res === "string") toast(res);
     dispatch(setLoader(false));
+    if(callback) callback();
 }).catch(() =>{
     dispatch(setLoader(false));
 });
 
-export const loginUser = (user: { username:string; password: string; }) => (
+export const loginUser = (user: { username:string; password: string; },callback?:() => void) => (
     dispatch:Dispatch<AnyAction>
 ):Promise<void> => request({
     url: `/login`,
@@ -32,8 +33,11 @@ export const loginUser = (user: { username:string; password: string; }) => (
     const { token } = res as any;
     if(typeof res === "string") toast(res);
     dispatch(setLoader(false));
-    dispatch(setUserData(res as any));
-    setCookie("me_token",token);
+    if(res && token) {
+        dispatch(setUserData(res as any));
+        setCookie("me_token",token);
+    }
+    if(callback) callback();
 }).catch(() => {
     dispatch(setLoader(false));
 });

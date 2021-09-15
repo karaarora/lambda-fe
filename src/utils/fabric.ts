@@ -63,10 +63,19 @@ export const updateTextBox = (canavs:fabric.Canvas,textbox:fabric.Textbox,object
     canavs.renderAll();
 };
 
-export const createTextBox = (e:MouseEvent, canvas:fabric.Canvas, options: fabric.ITextboxOptions):void => {
-    const { absolutePointer: { x, y }, target } = e as any;
-    if (target) return;
-    addTextBox(canvas, {...defaultTextBoxOptions,...options,left: x, top:y });
+export const createTextBox = (e:MouseEvent|null, canvas:fabric.Canvas, options: fabric.ITextboxOptions):void => {
+    let left:number;
+    let top:number;
+    if(e && "absolutePointer" in e) {
+        const { absolutePointer: { x, y }, target } = e as any;
+        left = x;
+        top = y;
+        if (target) return;
+    } else {
+        left = (canvas?.width||100)/2;
+        top = (canvas?.height||100)/2;
+    }
+    addTextBox(canvas, {...defaultTextBoxOptions,...options,left, top });
 };
 
 export const handleMouseDown = (e:IEvent<Event>, callback:(v:any) => void):void => {
@@ -77,8 +86,8 @@ export const handleMouseDown = (e:IEvent<Event>, callback:(v:any) => void):void 
     }
 };
 
-export const handleActiveObjectRemove = (e:KeyboardEvent, canvas:fabric.Canvas):void => {
-    if (e.key === 'Backspace' && e.metaKey) {
+export const handleActiveObjectRemove = (e:KeyboardEvent|null, canvas:fabric.Canvas):void => {
+    if ((e && e.key === 'Backspace' && e.metaKey) || !e) {
         canvas.remove(canvas.getActiveObject());
     }
 };

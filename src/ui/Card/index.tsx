@@ -13,13 +13,14 @@ const Card:React.FC<{
     handleClick: () => void; 
     isLiked: boolean;
     isDisLiked: boolean;
-    handleLike: () => void;
-    handleDisLike: () => void;
-}> = ({ data, isTemplate, handleClick, isDisLiked, isLiked, handleDisLike, handleLike }):JSX.Element => (
-    <div className={`inline-block bg-white rounded-lg shadow-md ${!isTemplate? 'h-auto w-full':'w-56 h-56'}
+    handleLike: (val:"LIKE"|"DISLIKE") => void;
+}> = ({ data, isTemplate, handleClick, isDisLiked, isLiked, handleLike }):JSX.Element => (
+    <div aria-label="meme-card" className={`inline-block bg-white rounded-lg shadow-md h-auto w-full
          mr-2 mb-2 transform transition-all ease-in hover:shadow-2xl`}>
-        <div className={`bg-primay-normal rounded-t-lg overflow-hidden transform transition-all 
-            duration-150 ease-in-out ${isTemplate ? 'h-48 bg-grey':''} cursor-pointer`} onClick={handleClick}>
+        <div aria-label="thumbnail" className={`bg-primay-normal rounded-t-lg overflow-hidden transform transition-all 
+            duration-150 ease-in-out ${isTemplate ? 'h-48 bg-grey':''} cursor-pointer`}
+            onClick={handleClick}
+        >
             <Image alt={data?.heading} className="rounded-t-lg object-contain w-full h-full"
             src={data.thumbnail_url} />
         </div>
@@ -30,14 +31,16 @@ const Card:React.FC<{
         {!isTemplate && <AuthWrapper>
             <div className="flex mx-2 mb-3 items-center">
                 <Thumbup 
+                    aria-label="like-icon"
                     className={`cursor-pointer w-5 hover:scale-125 transform active:scale-100 mr-2 
                     ${isLiked? "text-blue-400":"text-primary-bold"}`}
-                    onClick={() => handleLike()} />
+                    onClick={() => handleLike("LIKE")} />
                 {!!data.likes.length && <span className="text-xs text-primary-nomral">{data.likes.length}</span>}
                 <ThumbDown 
+                    aria-label="dislike-icon"
                     className={`cursor-pointer w-5 hover:scale-125 transform active:scale-100 mx-2
                         ${isDisLiked? "text-red-400":"text-primary-bold"}`}
-                    onClick={() => handleDisLike()} />
+                    onClick={() => handleLike("DISLIKE")} />
                 {!!data.dislikes.length && <span className="text-xs text-primary-nomral">{data.dislikes.length}</span>}
             </div>
         </AuthWrapper>}

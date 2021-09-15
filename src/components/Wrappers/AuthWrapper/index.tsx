@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -6,29 +8,24 @@ import Login from '../../Login';
 import ModalWrapper from '../ModalWrapper';
 
 const AuthWrapper:React.FC = ({ children }):JSX.Element => {
-    const { userData } = useSelector((state: { users: IState }) => state.users);
+    const { userData,loader } = useSelector((state: { users: IState }) => state.users);
     const [showAuth, setShowAuth] = useState(false);
      
     const handleClickCapture = useCallback(() => {
-        // check if user loggedin
-        // if not then show login popup
+        if((!userData && showAuth) || loader) return;
+        
         if(!userData) {
             setShowAuth(true);
-        } else {
-            setShowAuth(false);
         }
-    }, [userData]);
-
-    useEffect(() => {
-        if(userData) {
-            setShowAuth(false);
-        }
-    }, [userData]);
-
-    return <div onClickCapture={handleClickCapture}>
+    }, [loader, showAuth, userData]);
+    
+    return <div onClick={handleClickCapture}>
         {children}
         {showAuth && <ModalWrapper>
-            <Login handleClose={() =>{ setShowAuth(false); }} />
+            <Login handleClose={(e?:MouseEvent) =>{ 
+                e?.stopPropagation();
+                setShowAuth(false); 
+            }} />
         </ModalWrapper>}
     </div>;
 };

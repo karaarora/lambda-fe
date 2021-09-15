@@ -19,11 +19,10 @@ const Detail:React.FC<{
     handleEdit: () => void;
     isLiked: boolean;
     isDisLiked: boolean;
-    handleLike: () => void;
-    handleDisLike: () => void;
+    handleLike: (val:"LIKE"|"DISLIKE") => void;
     handleDownload: () => void;
-}> = ({ data, handleClose, handleEdit, isLiked, isDisLiked, handleDisLike, handleLike, handleDownload }):JSX.Element => (
-    <div className="flex flex-col h-screen">
+}> = ({ data, handleClose, handleEdit, isLiked, isDisLiked, handleLike, handleDownload }):JSX.Element => (
+    <div aria-label="meme-detail" className="flex flex-col h-screen">
         <div className="flex justify-between items-center my-4 flex-none">
             <div onClick={() => handleClose()}>
                 <LeftIcon className="cursor-pointer w-8 h-8 hover:scale-125 transform active:scale-100"  />
@@ -33,7 +32,7 @@ const Detail:React.FC<{
                 <span className="text-primary-normal font-small ml-2">{data?.view_count} Views</span>
             </div>
         </div>
-        <div className="rounded-2xl h-40 w-full h-72 bg-grey flex-grow">
+        <div className="rounded-2xl h-40 w-full h-72 bg-grey flex-grow overflow-y-scroll no-scrollbar">
             <Image alt="detail" className="rounded-2xl w-full h-full object-contain" src={data?.image_url} />
         </div>
         <div className="my-2 flex-none">
@@ -47,13 +46,13 @@ const Detail:React.FC<{
                         <ThumbUp 
                             className={`cursor-pointer w-6 hover:scale-125 transform active:scale-100 mr-2 
                             ${isLiked? "text-blue-400":"text-primary-bold"}`}
-                            onClick={() => handleLike()} />
+                            onClick={() => handleLike("LIKE")} />
                         {!!data?.likes.length && <span className="text-sm text-primary-nomral">
                             {data?.likes.length}</span>}
                         <ThumbDown 
                             className={`cursor-pointer w-6 hover:scale-125 transform active:scale-100 mx-2
                                 ${isDisLiked? "text-red-400":"text-primary-bold"}`}
-                            onClick={() => handleDisLike()} />
+                            onClick={() => handleLike("DISLIKE")} />
                         {!!data?.dislikes.length && <span className="text-sm text-primary-nomral">
                             {data?.dislikes.length}</span>} 
                     </div>

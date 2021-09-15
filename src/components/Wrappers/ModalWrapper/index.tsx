@@ -10,6 +10,7 @@ const ModalWrapper:React.FC = ({ children }) => {
       const elRef:HTMLDivElement = el.current;
     modalRoot?.appendChild(elRef);
     return ()=>{
+      console.log("unmounted modal");
       modalRoot?.removeChild(elRef);
     };
   },[]);

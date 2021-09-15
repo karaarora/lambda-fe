@@ -8,9 +8,11 @@ import { IState, Options as OptionsType } from '../../store/types/meme';
 import OrderedList from '../../ui/OrderedList';
 import OptionsSkeleton from '../../ui/Skeleton/OptionsSkeleton';
 
+const showTypeMeme = ["SAVED","PUBLISHED"]; 
 const Options:React.FC<{
     type: "sort"|"status";
-}> = ({ type }):JSX.Element => {
+    isPill?: boolean;
+}> = ({ type, isPill }):JSX.Element => {
     const { sortOptions, statusOptions, filter, loading  } = useSelector((state: { memes:IState }) => state.memes);
     const history = useHistory();
     const dispatch = useDispatch();
@@ -18,20 +20,21 @@ const Options:React.FC<{
         title: string;
         options: OptionsType[]
     } | null = useMemo(() => (type === "sort" ? sortOptions:statusOptions),[sortOptions, statusOptions, type]);
-
+    
     const list:any = useMemo(() => (options?.options||[]).map((option) => (
         { 
             name: option.displayText, 
             to: { pathname: history.location.pathname, search: `?${type}=${option.key}` },
             active: option.isSelected,
             onClick: () => {
+                const addFilter:any = showTypeMeme.includes(option.key) ? { type: "MEME" }:
+                    { type: type === "status" ? "TEMPLATE":"MEME" };
                 if(!option.isSelected && !loading) {
                     if(!loading) dispatch(setLoader(true));
-                    // dispatch(getMemes({...filter,[type]: option.key,query:"" }));
-                    dispatch(setFilter({...filter,[type as any]: option.key,query: "" }));
+                    dispatch(setFilter({...filter,[type as any]: option.key,query: "",...addFilter }));
                     dispatch(setLoader(true));
                     dispatch(setMemes([]));
-                    dispatch(getMemes({...filter,[type as any]: option.key,query: "" }));
+                    dispatch(getMemes({...filter,[type as any]: option.key,query: "",...addFilter }));
                     const newOptions:any = options?.options;
                     for(let i=0;i<newOptions?.length;i += 1){
                         newOptions[i].isSelected = false;
@@ -51,9 +54,9 @@ const Options:React.FC<{
     )) as any,[dispatch, filter, history.location.pathname, loading, options, type]);
 
     if(loading && !list.length)
-    return <OptionsSkeleton />;
+    return <OptionsSkeleton isPill={isPill} />;
 
-    return <OrderedList list={list} title={options?.title} />;
+    return <OrderedList isPill={isPill} list={list} title={options?.title} />;
 };
 
 export default Options;

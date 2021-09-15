@@ -41,8 +41,7 @@ const MemeAction:React.FC<{ action:"create_template"|"save_meme"|"publish_meme" 
         ({...state.editor, ...state.memes, ...state.users}));
     const dispatch = useDispatch();
 
-    const handleClick:MouseEventHandler<HTMLButtonElement> = useCallback((e) => {
-        e.stopPropagation();
+    const handleClick:MouseEventHandler<HTMLButtonElement> = useCallback(() => {
         if(!userData) return; 
         const { state, base64 } = getCanvasDetails(canvas as fabric.Canvas);
         dispatch(setLoader(true));

@@ -1,6 +1,6 @@
 import { IState, SET_LOADER, SET_USER_DATA, SetLoader, SetUserData } from "../types/users";
 
-const initialState:IState = {
+export const initialState:IState = {
     userData: null,
     loader: false
 };

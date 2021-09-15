@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html','./src/*'],
   darkMode: false, // or 'media' or 'class'
@@ -43,5 +45,19 @@ module.exports = {
       scale: ['active']
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function({ addUtilities }) {
+      const newUtilities = {
+        '.no-scrollbar::-webkit-scrollbar': {
+          display: 'none'
+        },
+        '.no-scrollbar': {
+          '-ms-overflow-style': 'none',  /* IE and Edge */
+          'scrollbar-width': 'none' 
+        },
+      }
+
+      addUtilities(newUtilities)
+    })
+  ],
 }

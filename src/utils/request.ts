@@ -24,7 +24,8 @@ const request = (options:AxiosRequestConfig):any => {
     if (error.response) {
       // Request was made but server responded with something
       // other than 2xx 
-      toast.error("Some Issue Occured! Please try in some time !");
+      toast.error(typeof error.response?.data === "string"? 
+        error.response?.data : "Some Issue Occured! Please try in some time !");
     } else {
       // Something else happened while setting up the request
       // triggered the error

@@ -6,7 +6,7 @@ export const loadFonts = (fonts:Font[]):void => {
   Promise.all(fonts.map((font:Font) => new Promise((res:any, rej:any) => {
     const fontData = {
       weight: 400,
-      src: `url('${font.file}')`,
+      src: `url('${font.file.replace('http','https')}')`,
     };
     const ff = new FontFace(font.family, fontData.src);
     ff.load()

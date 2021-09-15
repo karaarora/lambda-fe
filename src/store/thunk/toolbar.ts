@@ -4,7 +4,7 @@ import axios from "axios";
 import { AnyAction } from "redux";
 
 import { GOOGLE_FONTS_API_KEY } from "../../utils/env";
-import { formatFonts, loadFonts } from "../../utils/fonts";
+import { formatFonts } from "../../utils/fonts";
 import request from "../../utils/request";
 import { setMemeDataLoading } from "../actions/meme";
 import { setActiveFont, setFonts } from "../actions/toolbar";
@@ -18,7 +18,6 @@ export const getFonts = () => (dispatch:Dispatch<AnyAction>):Promise<void> => ax
             const fonts:Font[] = formatFonts(items);
             dispatch(setFonts(fonts));
             if(fonts[0]) dispatch(setActiveFont(fonts[0]));
-            loadFonts(fonts);
         });
 
 export const uploadImage = (data: { filename:string, base64:string }, callback?:(s:string) => void) => 

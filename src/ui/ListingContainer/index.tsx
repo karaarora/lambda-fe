@@ -1,9 +1,10 @@
 import React from 'react';
 
-const ListingContainer:React.FC<{ isCollapsed?: boolean; isMasonry?: boolean; ref: React.ForwardedRef<unknown> }> = 
+const ListingContainer:React.FC<{ isCollapsed?: boolean; ref: React.ForwardedRef<unknown> }> = 
     React.forwardRef(({ children }, ref):JSX.Element => (
     <div 
-        className="overflow-y-scroll p-2 mt-4" 
+        aria-label="memes-listing" 
+        className="overflow-y-scroll p-2 mt-4"
         ref={ref as React.LegacyRef<HTMLDivElement>}
     >
         {children}

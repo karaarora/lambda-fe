@@ -2,15 +2,17 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { setMemeData, setSelectedMeme } from '../../../store/actions/meme';
+import { setMemeData, setMemes, setSelectedMeme } from '../../../store/actions/meme';
 import { getMemeData, likeMeme } from '../../../store/thunk/meme';
 import { IState } from '../../../store/types/meme';
 import { IState as IUserState } from '../../../store/types/users';
 import Detail from '../../../ui/Detail';
-import { downloadMeme } from '../../../utils/functions';
+import MemeDetailSkeleton from '../../../ui/Skeleton/MemeDetailSkeleton';
+import { downloadMeme, update } from '../../../utils/functions';
 
 const MemeDetail:React.FC = ():JSX.Element|null => {
-    const { memeData, selectedMeme, memeDataLoading,userData } = useSelector((state: { memes: IState,users: IUserState }) => 
+    const { memeData, selectedMeme, memeDataLoading,userData,memes } = 
+        useSelector((state: { memes: IState,users: IUserState }) => 
         ({...state.memes,...state.users}));
     const dispatch = useDispatch();
     const history = useHistory();
@@ -34,26 +36,31 @@ const MemeDetail:React.FC = ():JSX.Element|null => {
         history.push(`/studio/${memeData?.id}`);
     }, [history, memeData?.id]);
 
-    const handleLike = useCallback(() => {
+    const handleLike = useCallback((action:"LIKE"|"DISLIKE") => {
         if(!userData) return;
-        if(memeData)
-        dispatch(likeMeme({ memeId: memeData.id, action: "LIKE",userId: userData?.id as string }));
-    }, [dispatch, memeData, userData]);
-
-    const handleDisLike = useCallback(() => {
-        if(!userData) return;
-        if(memeData)
-        dispatch(likeMeme({ memeId: memeData.id, action: "DISLIKE",userId: userData?.id as string}));
-    }, [dispatch, memeData, userData]);
+        if(memeData) {
+            const likes:any = memeData?.likes.filter((l:any) => l !== userData?.id);
+            const dislikes:any = memeData?.dislikes.filter((l:any) => l !== userData?.id);
+            if(likes.length < memeData?.likes.length && action === "LIKE") return; 
+            if(dislikes.length < memeData?.dislikes.length && action === "DISLIKE") return;
+            dispatch(likeMeme({ memeId: memeData.id, action,userId: userData?.id as string }));
+            const newMeme = {...memeData,
+                likes: action === "LIKE" ? [...likes,userData?.id]:likes,
+                dislikes: action === "DISLIKE" ? [...dislikes,userData?.id]:dislikes
+            };
+            dispatch(setMemeData(newMeme as any));
+            dispatch(setMemes(update(memes,newMeme,(v) => v.id === memeData?.id)));
+        }
+    }, [dispatch, memeData, memes, userData]);
 
     const handleDownload = useCallback(() => {
         downloadMeme(memeData?.image_url||"",memeData?.heading||"");
     }, [memeData?.heading, memeData?.image_url]);
 
     if(memeDataLoading)
-    return <div className="animate-pulse bg-grey w-full h-full" />;
+    return <MemeDetailSkeleton />;
 
-    return <Detail data={memeData} handleClose={handleClose} handleDisLike={handleDisLike} 
+    return <Detail data={memeData} handleClose={handleClose} 
         handleDownload={handleDownload} handleEdit={handleEdit} handleLike={handleLike}
         isDisLiked={isDisLiked} isLiked={isLiked}
     />;

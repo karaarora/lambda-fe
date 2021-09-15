@@ -3,7 +3,7 @@ import { CLEAR_MEME_STATE, ClearMemeState, IState, SET_FILTERS, SET_LOADER,
     SET_TOTAL_MEMES, SetFilters, SetLoader, SetMemeData, SetMemeDataLoading, SetMemes, 
     SetSelectedMeme, SetSortOptions, SetStatusOptions, SetTotalMemes } from "../types/meme";
 
-const initialState:IState = {
+export const initialState:IState = {
     memes: [],
     memeData: null,
     filter: null,

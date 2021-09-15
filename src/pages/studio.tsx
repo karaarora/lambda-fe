@@ -1,16 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
 
+import { ReactComponent as LeftArrow } from '../assets/icons/leftarrow.svg';
+import { ReactComponent as MenuIcon } from '../assets/icons/menu.svg';
 import Editor from '../components/Editor';
 import Listing from '../components/Listing';
 import ListingSearch from '../components/ListingSearch';
 import Title from '../components/Meme/Title';
 import Options from '../components/Options';
+import ToggleRightSideBar from '../components/ToggleRightSideBar';
 import FontSelect from '../components/ToolBar/Font/FontSelect';
 import FontSizeSelect from '../components/ToolBar/Font/FontSizeSelect';
 import MemeAction from '../components/ToolBar/MemeAction';
+import RemoveObject from '../components/ToolBar/RemoveObject';
+import TextBox from '../components/ToolBar/TextBox';
 import Upload from '../components/ToolBar/Upload';
 import User from '../components/User';
 import AuthWrapper from '../components/Wrappers/AuthWrapper';
@@ -27,6 +32,7 @@ import ToolTip from '../ui/Tooltip';
 import { clearFonts } from '../utils/fonts';
 
 const Studio:React.FC = (): JSX.Element => {
+    const ref = useRef(null);
     useEffect(() => () => clearFonts(), []);
 
     return <ErrorBoundaryWrapper> 
@@ -45,12 +51,21 @@ const Studio:React.FC = (): JSX.Element => {
             </SideBarContainer>
             <MainContainer className="p-8">
                 <DynamicModuleLoader modules={[getMemeModule()]}>
-                    <Title contentEditable>This is my Heading</Title>
+                    <div className="flex items-center">
+                    <Link 
+                        className="cursor-pointer scale-125 transform active:scale-100 block lg:hidden" 
+                        to="/"
+                    >
+                        <LeftArrow />
+                    </Link>
+                        <Title contentEditable>This is my Heading</Title>
+                        <ToggleRightSideBar sideBarRef={ref} />
+                    </div>
                 </DynamicModuleLoader>
                 <User isTemplate />
                 <DynamicModuleLoader modules={[getToolBarModule(),getEditorModule()]}>
                     <ToolBarContainer>
-                        <div className="flex w-1/2 sm:w-2/5">
+                        <div className="flex w-2/3 sm:w-2/5">
                             <RestrictWrapper levels={['editor','activeObject','type']} showFor="textbox">
                                 <FontSelect />
                                 <FontSizeSelect />
@@ -58,6 +73,18 @@ const Studio:React.FC = (): JSX.Element => {
                             <ToolTip position="bottom-full" value="Upload Background Image">
                                 <Upload />
                             </ToolTip>
+                            <RestrictWrapper levels={['memes','memeData']} showFor="notnull">
+                                <RestrictWrapper levels={['editor','activeObject']} showFor="null">
+                                    <ToolTip position="bottom-full" value="Add Text">
+                                        <TextBox />
+                                    </ToolTip>
+                                </RestrictWrapper>
+                            </RestrictWrapper>
+                            <RestrictWrapper levels={['editor','activeObject']} showFor="notnull">
+                                <ToolTip position="bottom-full" value="Remove Selected">
+                                    <RemoveObject />
+                                </ToolTip>
+                            </RestrictWrapper>
                         </div>
                         <AuthWrapper>
                             <div className="flex items-center">
@@ -78,10 +105,16 @@ const Studio:React.FC = (): JSX.Element => {
                     <Editor />
                 </DynamicModuleLoader>
             </MainContainer>
-            <SideBarContainer isExpanded={false} showOnRight>
+            <SideBarContainer isExpanded={false} ref={ref} showOnRight>
                 <DynamicModuleLoader modules={[getMemeModule()]}>
-                    <ListingSearch />                
-                    <Listing isMasonry={false} isTemplate  />
+                    <ToggleRightSideBar sideBarRef={ref} />
+                    <ListingSearch />  
+                    <div className="w-full block md:block lg:hidden">
+                        <DynamicModuleLoader modules={[getMemeModule()]}>
+                            <Options isPill type="status" />
+                        </DynamicModuleLoader>              
+                    </div>
+                    <Listing isTemplate  />
                 </DynamicModuleLoader>
             </SideBarContainer>
         </div>

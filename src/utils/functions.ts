@@ -96,6 +96,7 @@ export const downloadMeme = (fileURL: string, fileName: string):void => {
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = url;
+      a.target = "_blank";
       // the filename you want
       const extension = fileURL.split('.').pop();
       a.download = fileName.endsWith(`.${extension}`)?fileName: `${fileName}.${extension}`;
@@ -104,4 +105,11 @@ export const downloadMeme = (fileURL: string, fileName: string):void => {
       window.URL.revokeObjectURL(url);
     })
     .catch(() => toast.error('Something went wrong please try again!'));
+};
+
+export const update = (items:any[],updateVal:string|any,check: (val:any) => boolean):any[] => {
+  const i:number = items.findIndex(check);
+  const updatedItems = items;
+  updatedItems[i] = updateVal;
+  return updatedItems;
 };

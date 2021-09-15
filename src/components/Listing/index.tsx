@@ -1,10 +1,10 @@
-import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useInfiniteLoader, useMasonry, usePositioner, useResizeObserver } from "masonic";
 import { useScroller, useSize } from 'mini-virtual-list';
 
-import { clearMemeState, setFilter, setLoader, setMemes } from '../../store/actions/meme';
+import { clearMemeState, setFilter, setLoader, setMemes, setSortOptions, setStatusOptions } from '../../store/actions/meme';
 import { getMemes } from '../../store/thunk/meme';
 import { IState } from '../../store/types/meme';
 import { IState as IUserState } from '../../store/types/users';
@@ -30,12 +30,12 @@ const defaultFilters = {
     sort: sort||"TRENDING",
     query: ""
 };
+const showTypeMeme = ["SAVED","PUBLISHED"]; 
 
 const Listing:React.FC<{
-    isMasonry: boolean;
     isTemplate: boolean;
-}> = forwardRef(({ isMasonry, isTemplate }):JSX.Element => {
-    const { memes, loading, filter, selectedMeme, totalMemes, userData } = 
+}> = ({ isTemplate }):JSX.Element => {
+    const { memes, loading, filter, selectedMeme, totalMemes,loader } = 
         useSelector((state: { memes:IState, users: IUserState }) => ({...state.memes,...state.users}));
     const dispatch = useDispatch();
     const listingRef = useRef<HTMLDivElement>(null);
@@ -54,49 +54,42 @@ const Listing:React.FC<{
           totalItems: totalMemes
         }
     );
-    
-    // const containerRef = React.useRef(null);
-    // In this example we are deriving the height and width properties
-    // from a hook that measures the offsetWidth and offsetHeight of
-    // the scrollable div.
-    //
-    // The code for this hook can be found here:
-    // https://github.com/jaredLunde/mini-virtual-list/blob/5791a19581e25919858c43c37a2ff0eabaf09bfe/src/index.tsx#L376
+
     const { width, height } = useSize(listingRef);
-    // Likewise, we are tracking scroll position and whether or not
-    // the element is scrolling using the element, rather than the
-    // window.
-    //
-    // The code for this hook can be found here:
-    // https://github.com/jaredLunde/mini-virtual-list/blob/5791a19581e25919858c43c37a2ff0eabaf09bfe/src/index.tsx#L414
+
     const { scrollTop, isScrolling } = useScroller(listingRef);
     const positioner = usePositioner({
       width,
-      columnWidth: 188,
+      columnWidth: 200,
       columnGutter: 6
-    }, [loadableMemes,memes]);
+    }, [loadableMemes,loader,loading,selectedMeme]);
     const resizeObserver = useResizeObserver(positioner);
 
     useEffect(() => {
         triggerResizeEvent();
-    }, [memes]);
+    }, [memes,loading,loader,selectedMeme]);
 
-    useEffect(() => () => dispatch(clearMemeState()) as any, [dispatch]);
+    useEffect(() => () => {
+        dispatch(clearMemeState()) as any;
+        triggerResizeEvent();
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(setLoader(true));
-        
-        dispatch(setFilter(isTemplate ? defaultTemplateFilters :defaultFilters as any));
+        const addFilter:any = { type: showTypeMeme.includes(defaultTemplateFilters.status) ? "MEME":"TEMPLATE"  };
+        dispatch(setFilter(isTemplate ? {...defaultTemplateFilters,...addFilter} :defaultFilters as any));
 
-        dispatch(getMemes(isTemplate ? defaultTemplateFilters :defaultFilters));
+        dispatch(getMemes(isTemplate ? {...defaultTemplateFilters,...addFilter} :defaultFilters));
 
         return () => {
             dispatch(setMemes([]));
             dispatch(setFilter(null));
+            dispatch(setStatusOptions(null));
+            dispatch(setSortOptions(null));
         };
-    }, [dispatch, isTemplate, userData]);
+    }, [dispatch, isTemplate]);
     
-    return <ListingContainer isCollapsed={!!selectedMeme} isMasonry={isMasonry} ref={listingRef}>
+    return <ListingContainer isCollapsed={!!selectedMeme} ref={listingRef}>
         {useMasonry({
           positioner,
           resizeObserver,
@@ -110,6 +103,6 @@ const Listing:React.FC<{
         })}
         <div ref={fetchRef} />
     </ListingContainer>;
-});
+};
 
 export default Listing;

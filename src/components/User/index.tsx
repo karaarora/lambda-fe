@@ -16,6 +16,7 @@ const User:React.FC<{ isTemplate:boolean; }> = ({ isTemplate }):JSX.Element|null
         dispatch(setLoader(true));
         dispatch(setUserData(null));
         removeCookie("me_token");
+        window.location.reload();
     }, [dispatch]);
 
     useEffect(() => {
@@ -31,11 +32,12 @@ const User:React.FC<{ isTemplate:boolean; }> = ({ isTemplate }):JSX.Element|null
     return null;
 
     if(!userData) 
-    return loader ? <div className="w-20 h-12 bg-white rounded-xl animate-pulse" /> : <AuthWrapper>
+    return <AuthWrapper>
+        {loader ? <div className="w-20 h-12 bg-white rounded-xl animate-pulse" />:
         <button className="bg-primary rounded-3xl py-2 px-5 text-white w-fit mt-1 transition transform-all hover:opacity-75" 
             type="button">
             Login
-        </button>
+        </button>}
     </AuthWrapper>;
 
     return <Avatar handleLogout={handleLogout} userData={userData} />;

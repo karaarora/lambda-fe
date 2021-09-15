@@ -3,7 +3,7 @@ import React from 'react';
 const heigthArray = ['h-56','h-40','h-48'];
 const CardSkeleton:React.FC<{ isTemplate: boolean }> = ({ isTemplate }) => {
     const randomElement = heigthArray[Math.floor(Math.random() * heigthArray.length)];
-    return <div className={`inline-block bg-white rounded-lg shadow-md ${isTemplate ? "w-56":"w-full"} 
+    return <div aria-label="card-skeleton" className={`inline-block bg-white rounded-lg shadow-md ${isTemplate ? "w-56":"w-full"} 
             mr-4 mb-4 cursor-pointer`}>
         <div className={`bg-primay-normal rounded-t-lg ${randomElement} bg-grey animate-pulse`} />
         <div className="p-2">

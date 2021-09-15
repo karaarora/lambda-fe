@@ -8,6 +8,7 @@ import { Font, IState as ToolBarIState } from '../../../store/types/toolbar';
 import DropDown from '../../../ui/DropDown';
 import DropDownItem from '../../../ui/DropDownItem';
 import { updateTextBox } from '../../../utils/fabric';
+import { loadFonts } from '../../../utils/fonts';
 
 const FontSelect:React.FC = ():JSX.Element => {
     const { fonts, activeFont, canvas, activeObject } = useSelector((state: { toolbar: ToolBarIState, editor: EditorIState }) => 
@@ -31,6 +32,8 @@ const FontSelect:React.FC = ():JSX.Element => {
     useEffect(() => {
         if(!fonts.length){
             dispatch(getFonts());
+        } else if(document.fonts.size < 100) {
+            loadFonts(fonts);
         }
     }, [dispatch, fonts]);
     

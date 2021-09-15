@@ -13,7 +13,7 @@ const App: React.FC = () => (<>
   toastOptions={{
     // Define default options
     className: '',
-    duration: 4000,
+    duration: 14000,
     style: {
       background: '#363636',
       color: '#fff',

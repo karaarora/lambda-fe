@@ -5,13 +5,14 @@
   "dependencies": {
     "@craco/craco": "^6.2.0",
     "@react-hook/window-size": "^3.0.7",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.1",
     "@types/css-font-loading-module": "0.0.6",
     "@types/fabric": "^4.5.3",
     "@types/jest": "^26.0.20",
     "@types/react-dom": "^17.0.1",
+    "@types/redux-mock-store": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "@typescript-eslint/parser": "^4.30.0",
     "axios": "^0.21.3",
@@ -25,6 +26,7 @@
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "fabric": "^4.6.0",
+    "history": "^5.0.1",
     "masonic": "^3.4.1",
     "mini-virtual-list": "^0.3.1",
     "node-sass": "^5.0.0",
@@ -32,16 +34,15 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hot-toast": "^2.1.1",
-    "react-popper": "^2.2.5",
     "react-progressive-image": "^0.6.0",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
     "react-scripts": "^4.0.3",
     "react-share": "^4.4.0",
-    "react-virtualized": "^9.22.3",
     "redux": "^4.1.1",
     "redux-dynamic-modules": "^5.2.3",
     "redux-dynamic-modules-thunk": "^5.2.3",
+    "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.3.0",
     "serve": "^12.0.0",
     "typescript": "4.2.2",
@@ -55,7 +56,8 @@
     "test": "craco test",
     "eject": "react-scripts eject",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "yarn lint --fix"
+    "lint:fix": "yarn lint --fix",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -75,7 +77,6 @@
   "devDependencies": {
     "@types/react": "^17.0.19",
     "@types/react-router-dom": "^5.1.8",
-    "@types/react-virtualized": "^9.21.13",
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.36",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.9"

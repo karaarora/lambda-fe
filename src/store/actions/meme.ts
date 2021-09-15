@@ -42,7 +42,7 @@ export const setSelectedMeme = (payload: string):SetSelectedMeme => ({
 export const setSortOptions = (payload: {
     title: string;
     options: Options[]
-}):SetSortOptions => ({
+}|null):SetSortOptions => ({
     type: SET_SORT_OPTIONS,
     payload
 });
@@ -50,7 +50,7 @@ export const setSortOptions = (payload: {
 export const setStatusOptions = (payload: {
     title: string;
     options: Options[]
-}):SetStatusOptions => ({
+}|null):SetStatusOptions => ({
     type: SET_STATUS_OPTIONS,
     payload
 });

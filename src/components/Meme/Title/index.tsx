@@ -59,11 +59,11 @@ const Title:React.FC<{ contentEditable?: boolean; }> = ({ children, contentEdita
         };
     }, [handleKeyDown]);
 
-    return <div className={` text-xl text-primary-bold font-bold flex p-2 whitespace-nowrap overflow-hidden capitalize
-        ${canEdit ? 'w-11/12 break-all': ''} ${loading? "w-40 h-12 bg-white rounded-xl animate-pulse":""}`} 
+    return <div className={`flex-grow text-xl text-primary-bold font-bold flex p-2 whitespace-nowrap overflow-hidden capitalize
+        ${canEdit ? 'w-11/12 break-all': ''} ${loading? "w-60 h-12 bg-white rounded-xl animate-pulse":""}`} 
         contentEditable={canEdit}
         onBlur={handleBlur} ref={titleRef}>
-        {contentEditable ? (heading||children) : `${listingTitle} Memes`}
+        {contentEditable ? (heading||children) : `${listingTitle ? `${listingTitle} Memes`:""} `}
         {!canEdit && contentEditable && <EditIcon className="w-6 h-6 ml-2 cursor-pointer" onClick={handleEdit} />}
     </div>;
 };
