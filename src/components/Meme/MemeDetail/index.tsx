@@ -8,7 +8,7 @@ import { IState } from '../../../store/types/meme';
 import { IState as IUserState } from '../../../store/types/users';
 import Detail from '../../../ui/Detail';
 import MemeDetailSkeleton from '../../../ui/Skeleton/MemeDetailSkeleton';
-import { downloadMeme, update } from '../../../utils/functions';
+import { downloadMeme, triggerResizeEvent, update } from '../../../utils/functions';
 
 const MemeDetail:React.FC = ():JSX.Element|null => {
     const { memeData, selectedMeme, memeDataLoading,userData,memes } = 
@@ -25,6 +25,10 @@ const MemeDetail:React.FC = ():JSX.Element|null => {
         dispatch(getMemeData(selectedMeme));
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedMeme]);
+
+    useEffect(() => {
+        triggerResizeEvent();
+    }, [memeData?.id]);
 
     const handleClose = useCallback(() => {
         dispatch(setMemeData(null));
