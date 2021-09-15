@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
 
 import { ReactComponent as LeftArrow } from '../assets/icons/leftarrow.svg';
-import { ReactComponent as MenuIcon } from '../assets/icons/menu.svg';
 import Editor from '../components/Editor';
 import Listing from '../components/Listing';
 import ListingSearch from '../components/ListingSearch';
