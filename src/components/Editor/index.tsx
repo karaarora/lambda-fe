@@ -1,16 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { fabric } from 'fabric';
 
 import { setActiveObject, setCanvas } from '../../store/actions/editor';
+import { setMemeData } from '../../store/actions/meme';
 import { getMemeData } from '../../store/thunk/meme';
 import { IState as IEditorState } from '../../store/types/editor';
 import { IState as IMemeState } from '../../store/types/meme';
 import { IState } from '../../store/types/toolbar';
-import { addImage, createCanvas, createTextBox, defaultOptions, handleActiveObjectRemove, 
+import { addImage, createCanvas, createTextBox, defaultOptions, defaultTextBoxOptions, 
+    getCanvasDetails, handleActiveObjectRemove, 
     listenEvent } from '../../utils/fabric';
+import { getLocalStorage, setLocalStorage } from '../../utils/functions';
 
 const Editor:React.FC = ():JSX.Element => {
     const { fontSize, activeFont, memeData, memeDataLoading, canvas:canvasState, editorLoading } = useSelector(
@@ -19,8 +22,15 @@ const Editor:React.FC = ():JSX.Element => {
     const dispatch = useDispatch();
     const params:{ memeId: string; } = useParams(); 
     
+    const storeUpdatedState = useCallback((c:fabric.Canvas) => {
+        if(c.isEmpty()) return;
+        const { state } = getCanvasDetails(c);
+        setLocalStorage('ms_memeData',{ heading: memeData?.heading||"", state });
+    }, [memeData?.heading]);
+
     useEffect(() => {
-        if(params && params.memeId)
+        const LS_MEMEDATA = getLocalStorage('ms_memeData');
+        if(params && params.memeId && !LS_MEMEDATA)
         dispatch(getMemeData(params.memeId));
     }, [dispatch, params]);
 
@@ -32,21 +42,30 @@ const Editor:React.FC = ():JSX.Element => {
             
         const handleKeyDown = (e:KeyboardEvent) => handleActiveObjectRemove(e as any, canvas);
 
+        window.addEventListener('beforeunload',() => storeUpdatedState(canvas));
         document.addEventListener('keydown', handleKeyDown);
         listenEvent(canvas,"mouse:dblclick",handleDBClick);
         listenEvent(canvas,"selection:created",(e) => dispatch(setActiveObject(e.target)));
-        listenEvent(canvas,"selection:cleared",() => dispatch(setActiveObject(null)));
+        listenEvent(canvas,"selection:updated",(e) => dispatch(setActiveObject(e.target)));
         listenEvent(canvas,"selection:cleared",() => dispatch(setActiveObject(null)));
         canvas.renderAll();
         (window as any).canvas = canvas; 
         dispatch(setCanvas(canvas));
-
+        
+        const LS_MEMEDATA = getLocalStorage('ms_memeData');
+        if(LS_MEMEDATA){
+            dispatch(setMemeData(LS_MEMEDATA));
+        }
         return () => {
+            storeUpdatedState(canvas);
+            window.removeEventListener('beforeunload',() => storeUpdatedState(canvas));
             document.removeEventListener('keydown', handleKeyDown);
             canvas.off("mouse:dblclick",handleDBClick);
             canvas.off("selection:created",(e:any) => dispatch(setActiveObject(e.target)));
+            canvas.off("selection:updated",(e:any) => dispatch(setActiveObject(e.target)));
             canvas.off("selection:cleared",() => dispatch(setActiveObject(null)));
             canvas.removeListeners();
+            
             canvas.clear();
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,13 +76,18 @@ const Editor:React.FC = ():JSX.Element => {
             canvasState.clear();
             const state = JSON.parse(memeData?.state||"");
             canvasState.loadFromJSON(state,() => {
+                
                 if(canvasState.backgroundImage){ 
                     const { src } = canvasState.backgroundImage as any;
                     addImage(canvasState,src);
                 }
-                canvasState.getObjects().forEach((object:fabric.Object)=>{
-                    object.set(defaultOptions);
+
+                canvasState.getObjects().forEach((object:fabric.Object|fabric.Textbox|any)=>{
+                    object.set({...defaultOptions,dirty: true });
                 });
+                if(canvasState.size() > 0){
+                    canvasState.setActiveObject(canvasState.getObjects("textbox")[0]);
+                }
                 canvasState.renderAll();
             }); 
         }

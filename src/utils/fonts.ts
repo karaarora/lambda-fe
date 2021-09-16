@@ -2,8 +2,8 @@ import { Font } from "../store/types/toolbar";
 
 export const fontSizes = [8,9,10,11,12,14,18,24,30,36,48,60,72,96];
 export const fontsLoaded = (("fonts" in document) && (document.fonts.size > 0));
-export const loadFonts = (fonts:Font[]):void => {
-  Promise.all(fonts.map((font:Font) => new Promise((res:any, rej:any) => {
+export const loadFonts = (fonts:Font[]):Promise<unknown[]> => 
+Promise.all(fonts.map((font:Font) => new Promise((res:any, rej:any) => {
     const fontData = {
       weight: 400,
       src: `url('${font.file.replace('http','https')}')`,
@@ -18,7 +18,6 @@ export const loadFonts = (fonts:Font[]):void => {
         rej(error);
       });
   })));
-};
 
 export const clearFonts = ():void => {
   if("fonts" in document){

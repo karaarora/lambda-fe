@@ -21,6 +21,26 @@ const FontSelect:React.FC = ():JSX.Element => {
         }
     )),[fonts]);
 
+    useEffect(() => {
+        const active:any = activeObject;
+        
+        if(active && active.type === "textbox" && fonts.length > 0 && active.fontFamily) {
+            const font = fonts.find((f:Font) => f.family === active.fontFamily);
+            dispatch(setActiveFont(font || { family: active.fontFamily } as Font));
+            setTimeout(() => {
+                document.fonts.ready.then(() => {
+                    if(canvas) {
+                        canvas.getObjects("textbox").forEach((object:fabric.Object) => {
+                            const textObj:fabric.Object = object;
+                            textObj.dirty = true;
+                        });
+                        canvas?.renderAll();
+                    }
+                });
+            }, 2000);
+        }
+    }, [dispatch, fonts, activeObject, canvas]);
+
     const handleClick = useCallback((value: string) => {
         const font:Font = fonts.find((f:Font) => f.family === value) as Font;
         if(font) {

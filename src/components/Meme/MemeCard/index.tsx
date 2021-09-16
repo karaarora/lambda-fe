@@ -25,8 +25,10 @@ const MemeCard:React.FC<{ data: Meme }> = ({ data }):JSX.Element => {
     const handleClick = useCallback(() => {
         if(isTemplate) {
             if(params.memeId && params.memeId === data.id) return;
-            if(data.id) history.push(`/studio/${data.id}`);
-            else toast.error("Unable to select this Template!");
+            if(data.id) {
+                localStorage.removeItem("ms_memeData");
+                history.push(`/studio/${data.id}`);
+            } else toast.error("Unable to select this Template!");
         } else {
             if(selectedMeme && selectedMeme === data.id) return;
             if(!memeDataLoading) dispatch(setMemeDataLoading(true));

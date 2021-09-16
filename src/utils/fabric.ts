@@ -5,16 +5,17 @@ import { fabric } from "fabric";
 import { IEvent } from "fabric/fabric-impl";
 
 export const defaultOptions = {
-    cornerColor: "#fff",
+    cornerColor: "#46413b",
     borderColor: "#000",
     cornerStyle: "circle" as const,
     transparentCorners: false
 };
 
-const defaultTextBoxOptions = { 
+export const defaultTextBoxOptions = { 
     scaleX: 2,
     scaleY: 2,
-    isWrapping: true
+    isWrapping: true,
+    dirty: true
 };
 
 export const ESTATE_KEY = "ms_e_state";
@@ -45,8 +46,8 @@ export const addImage = (canvas: fabric.Canvas | any, url:string):void => {
     });
 };
 
-export const listenEvent = (canvas:fabric.Canvas,key:string, action:(e:any) => void):void => {
-    canvas.on(key, action as any);
+export const listenEvent = (canvas:fabric.Canvas|null,key:string, action:(e:any) => void):void => {
+    canvas?.on(key, action as any);
 };
 
 export const addTextBox = (canvas:fabric.Canvas,options: fabric.ITextboxOptions):void => {
@@ -63,7 +64,8 @@ export const updateTextBox = (canavs:fabric.Canvas,textbox:fabric.Textbox,object
     canavs.renderAll();
 };
 
-export const createTextBox = (e:MouseEvent|null, canvas:fabric.Canvas, options: fabric.ITextboxOptions):void => {
+export const createTextBox = (e:MouseEvent|null, canvas:fabric.Canvas|null, options: fabric.ITextboxOptions):void => {
+    if(!canvas) return;
     let left:number;
     let top:number;
     if(e && "absolutePointer" in e) {
@@ -86,7 +88,8 @@ export const handleMouseDown = (e:IEvent<Event>, callback:(v:any) => void):void 
     }
 };
 
-export const handleActiveObjectRemove = (e:KeyboardEvent|null, canvas:fabric.Canvas):void => {
+export const handleActiveObjectRemove = (e:KeyboardEvent|null, canvas:fabric.Canvas|null):void => {
+    if(!canvas) return;
     if ((e && e.key === 'Backspace' && e.metaKey) || !e) {
         canvas.remove(canvas.getActiveObject());
     }
