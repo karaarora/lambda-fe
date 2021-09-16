@@ -10,7 +10,7 @@ import { getMemeData } from '../../store/thunk/meme';
 import { IState as IEditorState } from '../../store/types/editor';
 import { IState as IMemeState } from '../../store/types/meme';
 import { IState } from '../../store/types/toolbar';
-import { addImage, createCanvas, createTextBox, defaultOptions, defaultTextBoxOptions, 
+import { addImage, createCanvas, createTextBox, defaultOptions, 
     getCanvasDetails, handleActiveObjectRemove, 
     listenEvent } from '../../utils/fabric';
 import { getLocalStorage, setLocalStorage } from '../../utils/functions';

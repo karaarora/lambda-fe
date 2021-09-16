@@ -68,4 +68,8 @@ const Title:React.FC<{ contentEditable?: boolean; }> = ({ children, contentEdita
     </div>;
 };
 
+Title.defaultProps = {
+    contentEditable: false
+};
+
 export default Title;

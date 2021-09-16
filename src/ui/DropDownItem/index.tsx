@@ -15,4 +15,8 @@ const DropDownItem:React.FC<{ items: DItem[]; addValueToStyle?: boolean; }> = ({
         ))}
     </div>;
 
+DropDownItem.defaultProps = {
+    addValueToStyle: false
+};
+
 export default DropDownItem;

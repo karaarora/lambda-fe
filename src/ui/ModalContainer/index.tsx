@@ -52,4 +52,9 @@ const ModalContainer:React.FC<{
         </>
       );
 
+ModalContainer.defaultProps = {
+  footer: undefined,
+  title: ""
+};
+
 export default ModalContainer;

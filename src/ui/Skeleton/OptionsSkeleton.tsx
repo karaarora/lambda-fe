@@ -11,4 +11,8 @@ const OptionsSkeleton:React.FC<{ isPill?: boolean; }> = ({ isPill }):JSX.Element
         </ol>
     </div>);
 
+OptionsSkeleton.defaultProps = {
+    isPill: false
+};
+
 export default OptionsSkeleton;

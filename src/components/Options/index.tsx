@@ -59,4 +59,8 @@ const Options:React.FC<{
     return <OrderedList isPill={isPill} list={list} title={options?.title} />;
 };
 
+Options.defaultProps = {
+    isPill: false
+};
+
 export default Options;

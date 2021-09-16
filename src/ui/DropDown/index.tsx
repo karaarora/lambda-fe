@@ -34,4 +34,8 @@ tabIndex={0}>
     </div>;
 };
 
+DropDown.defaultProps = {
+    addValueToStyle: false
+};
+
 export default DropDown;
