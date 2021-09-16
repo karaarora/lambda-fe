@@ -19,7 +19,7 @@ const defaultTemplateFilters = {
     type: "TEMPLATE",
     showAllMemes: false,
     status: status||"ALL",
-    sort: "",
+    sort: "LATEST",
     query: ""
 };
 
