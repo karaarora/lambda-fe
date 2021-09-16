@@ -32,13 +32,13 @@ yarn start
 
 ## Performance
 
-- Virtualized Listing of Memes (**masionic**)
-- Debounced Memes Searching
-- Page and Redux level code splitting (**redux-dynamic-modules**)
+* 🔥 Virtualized Listing of Memes (**masionic**)
+* 🔥 Debounced Memes Searching
+* 🔥 Page and Redux level code splitting (**redux-dynamic-modules**)
 
 ## Code Practices Followed
 
-- Linting (**prettier** with **Airbnb rules**)
+* 🔥 Linting (**prettier** with **Airbnb rules**)
 
 To run linter just type this in terminal, it will show any linting issues in _.js,.jsx,.ts,.tsx_ files.
 
@@ -52,7 +52,7 @@ If you find any minor linting issues try run this to fix them.
 npm run lint:fix
 ```
 
-- TypeScript
+* 🔥 TypeScript
 
 ## Testing
 
