@@ -65,7 +65,7 @@ npm run test
 To view the Coverage of the Test Cases. Run this.
 
 ```bash
-npm run test -- -- coverage
+npm run test -- --coverage
 ```
 
 ## Contributing
