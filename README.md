@@ -32,6 +32,16 @@ yarn start
 
 ## Performance
 
+#### Bundle Size
+![image](https://user-images.githubusercontent.com/29700196/133791697-774ccf46-70a7-412c-9ef2-b7e01b40c868.png)
+
+#### LightHouse Score for Home Page
+![image](https://user-images.githubusercontent.com/29700196/133817756-a8b82570-fc5a-486b-b12a-c033bf73fed7.png)
+
+#### LightHouse Score for Studio Page
+![image](https://user-images.githubusercontent.com/29700196/133817662-6de67ef3-e561-4c0d-b55c-5cd161a47379.png)
+
+
 * 🔥 Virtualized Listing of Memes (**masionic**)
 * 🔥 Debounced Memes Searching
 * 🔥 Page and Redux level code splitting (**redux-dynamic-modules**)
