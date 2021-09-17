@@ -24,9 +24,9 @@ const FontSelect:React.FC = ():JSX.Element => {
     useEffect(() => {
         const active:any = activeObject;
         
-        if(active && active.type === "textbox" && fonts.length > 0 && active.fontFamily) {
+        if(active && active.type === "textbox" && fonts.length > 0) {
             const font = fonts.find((f:Font) => f.family === active.fontFamily);
-            dispatch(setActiveFont(font || { family: active.fontFamily } as Font));
+            dispatch(setActiveFont(font ? { family: active.fontFamily } as Font : fonts[0]));
             setTimeout(() => {
                 document.fonts.ready.then(() => {
                     if(canvas) {

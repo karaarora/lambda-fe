@@ -17,7 +17,7 @@ const sort:any = params.get("sort");
 const status:any = params.get("status");
 const defaultTemplateFilters = {
     type: "TEMPLATE",
-    showAllMemes: false,
+    showAllMemes: true,
     status: status||"ALL",
     sort: "LATEST",
     query: ""
@@ -76,7 +76,11 @@ const Listing:React.FC<{
 
     useEffect(() => {
         dispatch(setLoader(true));
-        const addFilter:any = { type: showTypeMeme.includes(defaultTemplateFilters.status) ? "MEME":"TEMPLATE"  };
+        const addFilter:any = { 
+            type: showTypeMeme.includes(defaultTemplateFilters.status) ? "MEME":"TEMPLATE",
+            showTypeMeme: !showTypeMeme.includes(defaultTemplateFilters.status)
+        };
+        
         dispatch(setFilter(isTemplate ? {...defaultTemplateFilters,...addFilter} :defaultFilters as any));
 
         dispatch(getMemes(isTemplate ? {...defaultTemplateFilters,...addFilter} :defaultFilters));

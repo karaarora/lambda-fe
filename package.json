@@ -2,6 +2,7 @@
   "name": "memestudio-fe",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@craco/craco": "^6.2.0",
     "@react-hook/window-size": "^3.0.7",

@@ -16,6 +16,7 @@ const User:React.FC<{ isTemplate:boolean; }> = ({ isTemplate }):JSX.Element|null
         dispatch(setLoader(true));
         dispatch(setUserData(null));
         removeCookie("me_token");
+        localStorage.removeItem("ms_memeData");
         window.location.reload();
     }, [dispatch]);
 
