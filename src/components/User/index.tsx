@@ -34,8 +34,8 @@ const User:React.FC<{ isTemplate:boolean; }> = ({ isTemplate }):JSX.Element|null
 
     if(!userData) 
     return <AuthWrapper>
-        {loader ? <div className="w-20 h-12 bg-white rounded-xl animate-pulse" />:
-        <button className="bg-primary rounded-3xl py-2 px-5 text-white w-fit mt-1 transition transform-all hover:opacity-75" 
+        {loader ? <div className="w-20 h-12 bg-white rounded-xl animate-pulse mr-3" />:
+        <button className="bg-primary rounded-3xl py-2 px-5 text-white w-fit mt-1 transition transform-all hover:opacity-75 mr-3" 
             type="button">
             Login
         </button>}

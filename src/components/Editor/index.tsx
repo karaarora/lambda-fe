@@ -10,23 +10,26 @@ import { getMemeData } from '../../store/thunk/meme';
 import { IState as IEditorState } from '../../store/types/editor';
 import { IState as IMemeState } from '../../store/types/meme';
 import { IState } from '../../store/types/toolbar';
+import { IState as IUsersState } from '../../store/types/users';
 import { addImage, createCanvas, createTextBox, defaultOptions, 
     getCanvasDetails, handleActiveObjectRemove, 
     listenEvent } from '../../utils/fabric';
 import { getLocalStorage, setLocalStorage } from '../../utils/functions';
 
 const Editor:React.FC = ():JSX.Element => {
-    const { fontSize, activeFont, memeData, memeDataLoading, canvas:canvasState, editorLoading } = useSelector(
-        (state: { toolbar: IState, memes: IMemeState, editor: IEditorState }) => 
-        ({...state.toolbar, ...state.memes, ...state.editor}));
+    const { fontSize, activeFont, memeData, memeDataLoading, 
+        canvas:canvasState, editorLoading, userData } = useSelector(
+        (state: { toolbar: IState, memes: IMemeState, editor: IEditorState, users: IUsersState }) => 
+        ({...state.toolbar, ...state.memes, ...state.editor,...state.users }));
     const dispatch = useDispatch();
     const params:{ memeId: string; } = useParams(); 
     
     const storeUpdatedState = useCallback((c:fabric.Canvas) => {
+        if(!userData) return;
         if(c.isEmpty()) return;
         const { state } = getCanvasDetails(c);
         setLocalStorage('ms_memeData',{ heading: memeData?.heading||"", state });
-    }, [memeData?.heading]);
+    }, [memeData?.heading, userData]);
 
     useEffect(() => {
         const LS_MEMEDATA = getLocalStorage('ms_memeData');
