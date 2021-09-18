@@ -34,6 +34,7 @@ yarn install
 yarn start
 ```
 
+
 ## Performance
 
 #### Bundle Size
@@ -81,6 +82,9 @@ To view the Coverage of the Test Cases. Run this.
 ```bash
 npm run test -- --coverage
 ```
+The current coverage is **72%** and WIP. You can have detailed view here
+
+[Code Coverage Report.pdf](https://github.com/Sakshamkapur/lambda-fe/files/7190291/Code.coverage.report.for.All.files.pdf)
 
 ## Contributing
 
