@@ -45,6 +45,7 @@ const FontSelect:React.FC = ():JSX.Element => {
         const font:Font = fonts.find((f:Font) => f.family === value) as Font;
         if(font) {
             dispatch(setActiveFont(font));
+            if(canvas)
             updateTextBox(canvas as fabric.Canvas,activeObject as fabric.Textbox,{ fontFamily: font.family });
         }
     }, [canvas, dispatch, fonts, activeObject]);

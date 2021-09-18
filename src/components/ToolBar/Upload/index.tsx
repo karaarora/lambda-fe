@@ -49,8 +49,8 @@ const Upload:React.FC = ():JSX.Element => {
         >
             <ImageIcon />
         </button>
-        <input className="hidden" onChange={handleUpload} ref={inputRef}
-            type="file" />
+        <input accept="image/*" className="hidden" onChange={handleUpload}
+            ref={inputRef} type="file" />
     </>;
 };
 

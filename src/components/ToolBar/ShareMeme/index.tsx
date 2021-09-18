@@ -23,9 +23,12 @@ const ShareMeme:React.FC<{ link: string; }> = ({ link }):JSX.Element => {
     });
     
     return <div className="relative" onBlur={() => setShowDropUp(false)}  ref={ref}>
-            <Share className="cursor-pointer w-6 hover:scale-125 transform active:scale-100" 
-                onClick={() => setShowDropUp((v) => !v)} />
-            {showDropUp && <div className="w-24 rounded-lg shadow-xl bg-white absolute bottom-full
+            <Share aria-label="dropup-value" 
+                className="cursor-pointer w-6 hover:scale-125 transform active:scale-100" 
+                onClick={() => setShowDropUp((v) => !v)}    
+            />
+            {showDropUp && <div aria-label="dropup-items"
+                className="w-24 rounded-lg shadow-xl bg-white absolute bottom-full
                 p-3 flex flex-wrap flex-start justify-between"
             >
                 <FacebookShareButton className="mb-2" tabIndex={0} url={link}>

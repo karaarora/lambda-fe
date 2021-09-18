@@ -87,9 +87,10 @@ const Studio:React.FC = (): JSX.Element => {
                         </div>
                         <AuthWrapper>
                             <div className="flex items-center">
-                                <ToolTip position="bottom-full" value="Create a Template">
+                                {/* uncomment this to enable creating a template */}
+                                {/* <ToolTip position="bottom-full" value="Create a Template">
                                     <MemeAction action="create_template" />
-                                </ToolTip>
+                                </ToolTip> */}
                                 <ToolTip position="bottom-full" value="Save">
                                     <MemeAction action="save_meme" />
                                 </ToolTip>

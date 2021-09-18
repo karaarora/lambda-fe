@@ -6,7 +6,7 @@ import { ReactComponent as AvatarIcon } from '../../assets/icons/avatar.svg';
 import { UserData } from '../../store/types/users';
 
 const Avatar:React.FC<{ userData: UserData|null; handleLogout: () => void; }> = ({ userData, handleLogout }):JSX.Element => (
-    <div className="flex items-center pr-4">
+    <div aria-label="avatar" className="flex items-center pr-4">
         <div className="rounded-full bg-white shadow-md w-12 h-12 flex justify-center items-center">
             <AvatarIcon />
         </div>
@@ -14,7 +14,8 @@ const Avatar:React.FC<{ userData: UserData|null; handleLogout: () => void; }> = 
             <span className="text-sm font-medium text-primary-normal truncate w-20">hello, 
                 <span className="text-base font-medium text-primary-bold">@{userData?.username}</span>
             </span>
-            <span className="text-sm font-medium text-primary-bold underline cursor-pointer"
+            <span aria-label="logout"
+                className="text-sm font-medium text-primary-bold underline cursor-pointer"
                 onClick={() => handleLogout()}
             >Logout</span>
         </div>

@@ -16,19 +16,19 @@ import { triggerResizeEvent } from '../../../utils/functions';
 
 const ActionData = {
     "create_template": {
-        icon: <TemplateIcon className="h-6 w-6" />,
+        icon: <TemplateIcon className="h-6 w-6" aria-label="template-icon" />,
         defaultData: { type: "TEMPLATE" },
         sameUser: "create",
         differentUser: "create"
     },
     "save_meme": {
-        icon: <SaveIcon />,
+        icon: <SaveIcon aria-label="save-icon" />,
         defaultData: { status: "SAVED", type: "MEME" },
         sameUser: "update",
         differentUser: "create"
     },
     "publish_meme": {
-        icon: <UploadIcon />,
+        icon: <UploadIcon aria-label="upload-icon" />,
         defaultData: { status: "PUBLISHED", type: "MEME" },
         sameUser: "update",
         differentUser: "create"

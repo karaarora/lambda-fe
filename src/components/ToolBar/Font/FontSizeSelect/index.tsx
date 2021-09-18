@@ -18,19 +18,19 @@ const FontSizeSelect:React.FC = ():JSX.Element => {
     useEffect(() => {
         const active = activeObject;
         if(active && active.type === "textbox") {
-            dispatch(setFontSize(((active as fabric.Textbox).fontSize)?.toString() || ""));
+            dispatch(setFontSize(((active as fabric.Textbox).fontSize)?.toString() || "11"));
         }
     }, [activeObject, canvas, dispatch]);
 
     const handleClick = useCallback((value:string) => {
         if(value && fontSize !== value){
             dispatch(setFontSize(value));
-            const active:fabric.Object = canvas?.getActiveObject() as fabric.Object;
-            if(active.type === "textbox") {
+            const active:fabric.Object = (canvas?.getActiveObject()||activeObject) as fabric.Object;
+            if(active.type === "textbox" && canvas) {
                 updateTextBox(canvas as fabric.Canvas,active as fabric.Textbox,{ fontSize: parseInt(value,10) });
             }
         }
-    },[canvas, dispatch, fontSize]);
+    },[activeObject, canvas, dispatch, fontSize]);
  
     return <DropDown onClick={handleClick} value={fontSize}>
         <DropDownItem items={items} />

@@ -9,8 +9,9 @@ import thunk from 'redux-thunk';
 
 import { initialState as editorIState } from '../../../../store/reducers/editor';
 import toolBarReducer, { initialState } from '../../../../store/reducers/toolbar';
+import { fontSizes } from '../../../../utils/fonts';
 import { testfontsList } from '../../../../utils/test-data';
-import FontSelect from './index';
+import FontSizeSelect from './index';
 
 const mockStore = configureStore([thunk]);
 const setup = () => {
@@ -19,13 +20,13 @@ const setup = () => {
     const store = mockStore(storeState);
     
     render(<Provider store={store}>
-        <FontSelect />
+        <FontSizeSelect />
     </Provider>);
 
     return store;
 };
 
-test("If no activefont select first", () => {
+test("If no font size select show default", () => {
     const store = setup();
 
     const state = store.getState();
@@ -34,10 +35,10 @@ test("If no activefont select first", () => {
         toolbarState = toolBarReducer(toolbarState, action);
     });
 
-    expect(toolbarState.activeFont.family).toEqual(testfontsList[0].family);
+    expect(toolbarState.fontSize).toEqual("11");
 });
 
-test("Select a font", () => {
+test("Select a font Size", () => {
     const store = setup();
     store.clearActions();
 
@@ -51,5 +52,5 @@ test("Select a font", () => {
         toolbarState = toolBarReducer(toolbarState, action);
     });
 
-    expect(toolbarState.activeFont.family).toEqual(testfontsList[2].family);
+    expect(toolbarState.fontSize).toEqual(fontSizes[2].toString());
 });
