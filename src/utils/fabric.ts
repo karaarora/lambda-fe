@@ -22,7 +22,7 @@ export const ESTATE_KEY = "ms_e_state";
 export const createCanvas = (canvasId:string,options?:fabric.ICanvasOptions):fabric.Canvas => 
     new fabric.Canvas(canvasId, options);
 
-export const addImage = (canvas: fabric.Canvas | any, url:string):void => {
+export const addImage = (canvas: fabric.Canvas | any, url:string,callback?: (c:fabric.Canvas) => void):void => {
     fabric.Image.fromURL(url, (image:fabric.Image | any) => {
         const imgWidth = image.width;
         const imgHeight = image.height;
@@ -43,6 +43,7 @@ export const addImage = (canvas: fabric.Canvas | any, url:string):void => {
         });
         canvas.setBackgroundImage(image);
         canvas.renderAll();
+        if(callback) callback(canvas);
     });
 };
 
@@ -50,13 +51,12 @@ export const listenEvent = (canvas:fabric.Canvas|null,key:string, action:(e:any)
     canvas?.on(key, action as any);
 };
 
-export const addTextBox = (canvas:fabric.Canvas,options: fabric.ITextboxOptions):void => {
+export const addTextBox = (canvas:fabric.Canvas,options: fabric.ITextboxOptions):fabric.Canvas => {
     const textBox = new fabric.Textbox('Sample Text', {...options,...defaultOptions});
     canvas.add(textBox);
     canvas.renderAll();
-    setTimeout(() => {
-        canvas.setActiveObject(textBox);
-    }, 0);
+    canvas.setActiveObject(textBox);
+    return canvas;
 };
 
 export const updateTextBox = (canavs:fabric.Canvas,textbox:fabric.Textbox,object:fabric.ITextboxOptions):void => {

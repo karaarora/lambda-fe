@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setFontSize } from '../../../store/actions/toolbar';
-import { IState as EditorIState } from '../../../store/types/editor';
-import { IState as ToolBarIState } from '../../../store/types/toolbar';
-import DropDown from '../../../ui/DropDown';
-import DropDownItem from '../../../ui/DropDownItem';
-import { updateTextBox } from '../../../utils/fabric';
-import { fontSizes } from '../../../utils/fonts';
+import { setFontSize } from '../../../../store/actions/toolbar';
+import { IState as EditorIState } from '../../../../store/types/editor';
+import { IState as ToolBarIState } from '../../../../store/types/toolbar';
+import DropDown from '../../../../ui/DropDown';
+import DropDownItem from '../../../../ui/DropDownItem';
+import { updateTextBox } from '../../../../utils/fabric';
+import { fontSizes } from '../../../../utils/fonts';
 
 const items = fontSizes.map((size:number) => ({ name: size.toString() }));
 const FontSizeSelect:React.FC = ():JSX.Element => {

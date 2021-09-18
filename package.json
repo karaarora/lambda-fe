@@ -28,6 +28,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "fabric": "^4.6.0",
     "history": "^5.0.1",
+    "jsdom": "^17.0.0",
     "masonic": "^3.4.1",
     "mini-virtual-list": "^0.3.1",
     "node-sass": "^5.0.0",
@@ -81,5 +82,15 @@
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.36",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.9"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{tsx,js,ts}"
+    ],
+    "coverageReporters": [
+      "json",
+      "html",
+      "text"
+    ]
   }
 }

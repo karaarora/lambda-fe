@@ -12,3 +12,6 @@ Object.defineProperty(window, 'matchMedia', {
     removeListener: () => {}
   })
 });
+Object.defineProperty(document, 'fonts', {
+  value: () => (document.fonts)
+});

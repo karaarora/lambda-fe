@@ -24,12 +24,11 @@ const Editor:React.FC = ():JSX.Element => {
     const dispatch = useDispatch();
     const params:{ memeId: string; } = useParams(); 
     
-    const storeUpdatedState = useCallback((c:fabric.Canvas) => {
-        if(!userData) return;
-        if(c.isEmpty()) return;
+    const storeUpdatedState = useCallback((c:fabric.Canvas|null) => {
+        if(!c || c?.isEmpty()) return;
         const { state } = getCanvasDetails(c);
         setLocalStorage('ms_memeData',{ heading: memeData?.heading||"", state });
-    }, [memeData?.heading, userData]);
+    }, [memeData?.heading]);
 
     useEffect(() => {
         const LS_MEMEDATA = getLocalStorage('ms_memeData');
@@ -73,9 +72,10 @@ const Editor:React.FC = ():JSX.Element => {
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    
+
     useEffect(() => {
-        if(memeData?.state && memeData?.state !== "true" && canvasState) {
+        if(memeData?.state && canvasState) {
+            setLocalStorage('ms_memeData',{ heading: memeData?.heading||"", state: memeData?.state });
             canvasState.clear();
             const state = JSON.parse(memeData?.state||"");
             canvasState.loadFromJSON(state,() => {
@@ -92,6 +92,7 @@ const Editor:React.FC = ():JSX.Element => {
                     canvasState.setActiveObject(canvasState.getObjects("textbox")[0]);
                 }
                 canvasState.renderAll();
+                storeUpdatedState(canvasState);
             }); 
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,12 +100,14 @@ const Editor:React.FC = ():JSX.Element => {
 
     // const handleBlur = useCallback(() => canvas.discardActiveObject(), [canvas]);
 
-    return <div className={`w-full h-full-minus-above bg-white rounded-3xl mt-5 flex items-center overflow-hidden 
-        ${(!memeDataLoading && !editorLoading) && !memeData?.state ? "relative":""} 
+    return <div aria-label="canvas-container" className={`w-full h-full-minus-above bg-white rounded-3xl 
+        mt-5 flex items-center overflow-hidden ${(!memeDataLoading && !editorLoading) && !memeData?.state ? "relative":""} 
         ${memeDataLoading||editorLoading? "animate-pulse bg-gray-50":""}`}>
         <canvas id="meme_canvas" />
-        {(!memeDataLoading && !editorLoading) && !memeData?.state && <p className={`text-base text-primary-bold
-            font-bold px-20 w-full text-center left-1/2 absolute origin-center block transform -translate-x-2/4`}>
+        {(!memeDataLoading && !editorLoading) && !memeData?.state && <p aria-label="canvas-instructions"
+            className={`text-base text-primary-bold
+            font-bold px-20 w-full text-center left-1/2 absolute origin-center block transform -translate-x-2/4`}
+        >
                 <span>
                     Hey There, Just click on the upload icon 👆
                     to add a meme template background or just choose

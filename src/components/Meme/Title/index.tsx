@@ -59,12 +59,20 @@ const Title:React.FC<{ contentEditable?: boolean; }> = ({ children, contentEdita
         };
     }, [handleKeyDown]);
 
-    return <div className={`flex-grow text-xl text-primary-bold font-bold flex p-2 whitespace-nowrap overflow-hidden capitalize
+    return <div aria-label="title" 
+        className={`flex-grow text-xl text-primary-bold font-bold flex p-2 whitespace-nowrap overflow-hidden capitalize
         ${canEdit ? 'w-11/12 break-all': ''} ${loading? "w-60 h-12 bg-white rounded-xl animate-pulse":""}`} 
         contentEditable={canEdit}
-        onBlur={handleBlur} ref={titleRef}>
+        onBlur={handleBlur}
+        ref={titleRef} suppressContentEditableWarning>
         {contentEditable ? (heading||children) : `${listingTitle ? `${listingTitle} Memes`:""} `}
-        {!canEdit && contentEditable && <EditIcon className="w-6 h-6 ml-2 cursor-pointer" onClick={handleEdit} />}
+        {!canEdit && contentEditable && (
+            <EditIcon 
+                aria-label="title-edit-icon"
+                className="w-6 h-6 ml-2 cursor-pointer" 
+                onClick={handleEdit} 
+            />
+        )}
     </div>;
 };
 

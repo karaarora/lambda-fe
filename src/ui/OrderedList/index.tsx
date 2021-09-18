@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { OrderedListItem, OrderedListProps } from './types';
 
 const OrderedList: React.FC<OrderedListProps> = ({ list, title, isPill }): JSX.Element => <div 
-    className={isPill ? "mt-5 ml-3":"my-20"}>
+    aria-label={isPill ? "pill-list":"list"} className={isPill ? "mt-5 ml-3":"my-20"}>
         {title && !isPill && <span className="text-primary-bold text-sm font-bold">{title}</span>}
         <ol className={`text-primary-normal mt-2 ${isPill ? "flex w-full overflow-scroll no-scrollbar":""}`}>
             {list.map(({ name, to, active, onClick }: OrderedListItem) => (

@@ -2,12 +2,13 @@ import React, { useCallback, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ReactComponent as ImageIcon } from '../../assets/icons/image.svg';
-import { setMemeData } from '../../store/actions/meme';
-import { IState } from '../../store/types/editor';
-import { IState as IMemeState } from '../../store/types/meme';
-import { addImage } from '../../utils/fabric';
-import { getBase64 } from '../../utils/functions';
+import { ReactComponent as ImageIcon } from '../../../assets/icons/image.svg';
+import { setCanvas } from '../../../store/actions/editor';
+import { setMemeData } from '../../../store/actions/meme';
+import { IState } from '../../../store/types/editor';
+import { IState as IMemeState } from '../../../store/types/meme';
+import { addImage, getCanvasDetails } from '../../../utils/fabric';
+import { getBase64 } from '../../../utils/functions';
 
 const Upload:React.FC = ():JSX.Element => {
     const { canvas, memeData } = useSelector((state: { editor:IState, meme: IMemeState }) => ({...state.editor,...state.meme}));
@@ -20,8 +21,11 @@ const Upload:React.FC = ():JSX.Element => {
             // const url:string = URL.createObjectURL(e.target.files[0]);
             getBase64(e.target.files[0]).then((res:string,err:boolean) => {
                 if(!err) {
-                    addImage(canvas, res);
-                    dispatch(setMemeData({...memeData, state: "true"} as any));
+                    addImage(canvas, res,(c:fabric.Canvas) => {
+                        const { state } = getCanvasDetails(c);
+                        dispatch(setCanvas(c));
+                        dispatch(setMemeData({...memeData, state} as any));
+                    });
                 } else {
                     toast.error("Unable to upload Image!");
                 }

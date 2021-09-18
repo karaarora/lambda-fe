@@ -1,6 +1,6 @@
 import { IState, SET_ACTIVE_FONT, SET_FONT_SIZE, SET_FONTS, SetActiveFont, SetFonts, SetFontSize } from "../types/toolbar";
 
-const initialState:IState = {
+export const initialState:IState = {
     fonts: [],
     activeFont: null,
     fontSize: "11"

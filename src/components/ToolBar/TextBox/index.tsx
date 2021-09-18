@@ -2,11 +2,11 @@ import React, { useCallback } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-import { ReactComponent as AnnotationIcon } from '../../assets/icons/annotation.svg';
-import { IState } from "../../store/types/editor";
-import { IState as IMemeState } from "../../store/types/meme";
-import { IState as IToolBarState } from "../../store/types/toolbar";
-import { createTextBox } from "../../utils/fabric";
+import { ReactComponent as AnnotationIcon } from '../../../assets/icons/annotation.svg';
+import { IState } from "../../../store/types/editor";
+import { IState as IMemeState } from "../../../store/types/meme";
+import { IState as IToolBarState } from "../../../store/types/toolbar";
+import { createTextBox } from "../../../utils/fabric";
 
 const TextBox:React.FC = () => {
     const { canvas,fontSize,activeFont,memeData } = useSelector((state: 

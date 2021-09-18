@@ -11,8 +11,8 @@ import {
     WhatsappShareButton
 } from 'react-share';
 
-import { ReactComponent as Share } from '../../assets/icons/share.svg';
-import useOutsideClick from "../../utils/hooks/useOutSideClick";
+import { ReactComponent as Share } from '../../../assets/icons/share.svg';
+import useOutsideClick from "../../../utils/hooks/useOutSideClick";
 
 const ShareMeme:React.FC<{ link: string; }> = ({ link }):JSX.Element => {
     const [showDropUp, setShowDropUp] = useState(false);

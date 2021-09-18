@@ -3,16 +3,16 @@
 import React, { MouseEventHandler, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ReactComponent as SaveIcon } from '../../assets/icons/save.svg';
-import { ReactComponent as TemplateIcon } from '../../assets/icons/template.svg';
-import { ReactComponent as UploadIcon } from '../../assets/icons/upload.svg';
-import { setLoader } from '../../store/actions/editor';
-import { createMeme } from '../../store/thunk/meme';
-import { IState } from '../../store/types/editor';
-import { IState as IMemeState } from '../../store/types/meme';
-import { IState as IUserState } from '../../store/types/users';
-import { getCanvasDetails } from '../../utils/fabric';
-import { triggerResizeEvent } from '../../utils/functions';
+import { ReactComponent as SaveIcon } from '../../../assets/icons/save.svg';
+import { ReactComponent as TemplateIcon } from '../../../assets/icons/template.svg';
+import { ReactComponent as UploadIcon } from '../../../assets/icons/upload.svg';
+import { setLoader } from '../../../store/actions/editor';
+import { createMeme } from '../../../store/thunk/meme';
+import { IState } from '../../../store/types/editor';
+import { IState as IMemeState } from '../../../store/types/meme';
+import { IState as IUserState } from '../../../store/types/users';
+import { getCanvasDetails } from '../../../utils/fabric';
+import { triggerResizeEvent } from '../../../utils/functions';
 
 const ActionData = {
     "create_template": {

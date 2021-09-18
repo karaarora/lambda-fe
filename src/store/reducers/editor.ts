@@ -1,6 +1,6 @@
 import { IState, SET_ACTIVE_OBJECT, SET_CANVAS, SET_LOADER, SetActiveObject, SetCanvas, SetLoader } from "../types/editor";
 
-const initialState:IState = {
+export const initialState:IState = {
     canvas: null,
     activeObject: null,
     editorLoading: false

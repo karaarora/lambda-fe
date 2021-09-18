@@ -48,7 +48,7 @@ const Listing:React.FC<{
             });
         },
         {
-          isItemLoaded: (index, items) => !!items[index],
+          isItemLoaded: (index, items) => !!items[index] && items.length > 0,
           minimumBatchSize: 20,
           threshold: 3,
           totalItems: totalMemes
@@ -80,7 +80,7 @@ const Listing:React.FC<{
             type: showTypeMeme.includes(defaultTemplateFilters.status) ? "MEME":"TEMPLATE",
             showTypeMeme: !showTypeMeme.includes(defaultTemplateFilters.status)
         };
-        
+
         dispatch(setFilter(isTemplate ? {...defaultTemplateFilters,...addFilter} :defaultFilters as any));
 
         dispatch(getMemes(isTemplate ? {...defaultTemplateFilters,...addFilter} :defaultFilters));

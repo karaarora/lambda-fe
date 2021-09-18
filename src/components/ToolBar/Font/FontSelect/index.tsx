@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setActiveFont } from '../../../store/actions/toolbar';
-import { getFonts } from '../../../store/thunk/toolbar';
-import { IState as EditorIState } from '../../../store/types/editor';
-import { Font, IState as ToolBarIState } from '../../../store/types/toolbar';
-import DropDown from '../../../ui/DropDown';
-import DropDownItem from '../../../ui/DropDownItem';
-import { updateTextBox } from '../../../utils/fabric';
-import { loadFonts } from '../../../utils/fonts';
+import { setActiveFont } from '../../../../store/actions/toolbar';
+import { getFonts } from '../../../../store/thunk/toolbar';
+import { IState as EditorIState } from '../../../../store/types/editor';
+import { Font, IState as ToolBarIState } from '../../../../store/types/toolbar';
+import DropDown from '../../../../ui/DropDown';
+import DropDownItem from '../../../../ui/DropDownItem';
+import { updateTextBox } from '../../../../utils/fabric';
+import { loadFonts } from '../../../../utils/fonts';
 
 const FontSelect:React.FC = ():JSX.Element => {
     const { fonts, activeFont, canvas, activeObject } = useSelector((state: { toolbar: ToolBarIState, editor: EditorIState }) => 
@@ -52,7 +52,7 @@ const FontSelect:React.FC = ():JSX.Element => {
     useEffect(() => {
         if(!fonts.length){
             dispatch(getFonts());
-        } else if(document.fonts.size < 100) {
+        } else if(document.fonts && document.fonts.size < 100) {
             loadFonts(fonts);
         }
     }, [dispatch, fonts]);

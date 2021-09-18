@@ -19,7 +19,7 @@ const ListingSearch:React.FC = ():JSX.Element => {
             dispatch(setLoader(true));
             dispatch(setMemes([]));
             dispatch(getMemes({ ...filter,query:  e.target.value }));
-        },800);
+        },400);
     }, [dispatch, filter]);
 
     useEffect(() => {

@@ -23,8 +23,8 @@ tabIndex={0}>
             border border-solid border-4 border-gray-200"
             onClick={() => setShow(v => !v)}
         >
-            <span className="w-4/5 truncate px-4 py-1 text-sm" style={addValueToStyle ? { fontFamily: value as string }: {}}
-                >{value}</span>
+            <span aria-label="dropdown-value" className="w-4/5 truncate px-4 py-1 text-sm"
+                style={addValueToStyle ? { fontFamily: value as string }: {}}>{value}</span>
             <span className="mr-2"><DownIcon /></span>
         </div>
         {show && <div className="absolute bg-white rounded-xl overflow-hidden 

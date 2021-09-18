@@ -93,7 +93,7 @@ const Login:React.FC<{
     }, [handleSubmit]);
 
     return <ModalContainer footer={
-            <p className="text-xs">{isSignUp ? "Already Signed Up? ": "Here for firt time? "} 
+            <p className="text-xs">{isSignUp ? "Already Signed Up? ": "Here for first time? "} 
                 <span className="underline cursor-pointer" data-testid="signup-toggle"
                     onClick={() => setIsSignUp((v) => !v)}>{isSignUp ? 'Log In' : 'Sign Up'}
                 </span>

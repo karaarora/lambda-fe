@@ -44,12 +44,14 @@ const Detail:React.FC<{
                 <AuthWrapper>
                     <div className="flex justify-between flex-none">
                         <ThumbUp 
+                            aria-label="detail-like-icon"
                             className={`cursor-pointer w-6 hover:scale-125 transform active:scale-100 mr-2 
                             ${isLiked? "text-blue-400":"text-primary-bold"}`}
                             onClick={() => handleLike("LIKE")} />
                         {!!data?.likes.length && <span className="text-sm text-primary-nomral">
                             {data?.likes.length}</span>}
                         <ThumbDown 
+                            aria-label="detail-dislike-icon"
                             className={`cursor-pointer w-6 hover:scale-125 transform active:scale-100 mx-2
                                 ${isDisLiked? "text-red-400":"text-primary-bold"}`}
                             onClick={() => handleLike("DISLIKE")} />
@@ -61,10 +63,12 @@ const Detail:React.FC<{
         </div>
         <div className="flex items-center mt-2 w-24 justify-between flex-none">
             <ShareMeme link={data?.image_url||""} />
-            <Download className="cursor-pointer w-6 hover:scale-125 transform active:scale-100"  
+            <Download
+                className="cursor-pointer w-6 hover:scale-125 transform active:scale-100"  
                 onClick={() => handleDownload()}
             />
-            <Pencil className="cursor-pointer w-6 hover:scale-125 transform active:scale-100"  onClick={() => handleEdit()} />
+            <Pencil aria-label="detail-edit-icon" 
+                className="cursor-pointer w-6 hover:scale-125 transform active:scale-100"  onClick={() => handleEdit()} />
         </div>
     </div>
 );

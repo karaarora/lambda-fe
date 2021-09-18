@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import { useSelector } from "react-redux";
 
-import { ReactComponent as DeleteIcon } from '../../assets/icons/delete.svg';
-import { IState } from "../../store/types/editor";
-import { handleActiveObjectRemove } from "../../utils/fabric";
+import { ReactComponent as DeleteIcon } from '../../../assets/icons/delete.svg';
+import { IState } from "../../../store/types/editor";
+import { handleActiveObjectRemove } from "../../../utils/fabric";
 
 const RemoveObject:React.FC = ():JSX.Element => {
     const { canvas } = useSelector((state: { editor:IState }) => state.editor);
