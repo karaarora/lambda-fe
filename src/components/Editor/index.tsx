@@ -18,7 +18,7 @@ import { getLocalStorage, setLocalStorage } from '../../utils/functions';
 
 const Editor:React.FC = ():JSX.Element => {
     const { fontSize, activeFont, memeData, memeDataLoading, 
-        canvas:canvasState, editorLoading, userData } = useSelector(
+        canvas:canvasState, editorLoading } = useSelector(
         (state: { toolbar: IState, memes: IMemeState, editor: IEditorState, users: IUsersState }) => 
         ({...state.toolbar, ...state.memes, ...state.editor,...state.users }));
     const dispatch = useDispatch();
@@ -97,8 +97,6 @@ const Editor:React.FC = ():JSX.Element => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [memeData?.state]);
-
-    // const handleBlur = useCallback(() => canvas.discardActiveObject(), [canvas]);
 
     return <div aria-label="canvas-container" className={`w-full h-full-minus-above bg-white rounded-3xl 
         mt-5 flex items-center overflow-hidden ${(!memeDataLoading && !editorLoading) && !memeData?.state ? "relative":""} 

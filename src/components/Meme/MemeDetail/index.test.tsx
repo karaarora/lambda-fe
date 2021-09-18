@@ -13,7 +13,7 @@ import thunk from 'redux-thunk';
 
 import memeReducer, { initialState } from '../../../store/reducers/meme';
 import { initialState as initialUserState } from '../../../store/reducers/users';
-import { disLikeClass, getTestMeme, likeClass, MemeLoadableCard, testUser } from '../../../utils/test-data';
+import { disLikeClass, getTestMeme, likeClass, testUser } from '../../../utils/test-data';
 import MemeDetail from './index';
 
 const mockStore = configureStore([thunk]);

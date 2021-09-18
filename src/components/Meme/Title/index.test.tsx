@@ -11,7 +11,7 @@ import { createBrowserHistory } from 'history';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import memeReducer, { initialState } from '../../../store/reducers/meme';
+import { initialState } from '../../../store/reducers/meme';
 import { initialState as initialUserState } from '../../../store/reducers/users';
 import { getTestMeme, testUser } from '../../../utils/test-data';
 import Title from './index';

@@ -5,17 +5,15 @@ import { Toaster } from "react-hot-toast";
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { fabric } from 'fabric';
 import { createBrowserHistory } from 'history';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { setMemeData } from '../../store/actions/meme';
-import editorReducer from '../../store/reducers/editor';
-import memeReducer, { initialState } from '../../store/reducers/meme';
+import { initialState } from '../../store/reducers/meme';
 import { initialState as initialUserState } from '../../store/reducers/users';
-import { getTestMeme, testFilters, testUser } from '../../utils/test-data';
+import { getTestMeme, testUser } from '../../utils/test-data';
 import Editor from './index';
 
 const mockStore = configureStore([thunk]);

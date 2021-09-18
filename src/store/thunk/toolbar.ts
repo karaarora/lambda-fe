@@ -16,7 +16,6 @@ export const getFonts = () => (dispatch:Dispatch<AnyAction>):Promise<void> => ax
         }).then((res:any) => {
             const { items } = res.data as any;
             const fonts:Font[] = formatFonts(items);
-            console.log(fonts.filter((f,i) => i < 3 ));
             dispatch(setFonts(fonts));
             if(fonts[0]) dispatch(setActiveFont(fonts[0]));
         });
